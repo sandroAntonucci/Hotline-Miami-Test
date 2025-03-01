@@ -31,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float slideHeight = 0.5f; // Height of the character controller during the slide
     [SerializeField] private float slideCooldown = 2f; // Cooldown before the player can slide again
 
+    private float originalSlideSpeedMultiplier;
+
     private float originalHeight; 
     private bool isSliding = false; 
     private float slideTimer = 0f; 
@@ -61,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         mainCamera = Camera.main;
         originalHeight = gameObject.transform.localScale.y;
+        originalSlideSpeedMultiplier = slideSpeedMultiplier;
 
         moveAction = PlayerControls.FindActionMap("Player").FindAction("Move");
         lookAction = PlayerControls.FindActionMap("Player").FindAction("Look");
@@ -105,6 +108,7 @@ public class PlayerMovement : MonoBehaviour
         if (isSliding)
         {
             slideTimer -= Time.deltaTime;
+            slideSpeedMultiplier = originalSlideSpeedMultiplier * (slideTimer / slideDuration) * 2;
             if (slideTimer <= 0f)
             {
                 StopSlide();
@@ -173,6 +177,7 @@ public class PlayerMovement : MonoBehaviour
         {
             isSliding = false;
             slideCooldownTimer = slideCooldown;
+            slideSpeedMultiplier = originalSlideSpeedMultiplier;
 
             // Start a coroutine to smoothly transition back to the original height
             StartCoroutine(LerpHeight(slideHeight, originalHeight, 0.2f)); // Adjust the duration (0.2f) as needed
