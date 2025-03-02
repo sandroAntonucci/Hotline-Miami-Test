@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ItemHolder
   - Gun
+  - InteractionText
   layers:
   - Default
   - TransparentFX

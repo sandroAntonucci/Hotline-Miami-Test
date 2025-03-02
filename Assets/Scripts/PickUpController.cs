@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 
 public class PickUpController : MonoBehaviour
@@ -33,7 +34,7 @@ public class PickUpController : MonoBehaviour
 
         pickAction.performed += _ =>
         {
-            if(!equipped && playerCanPick && !slotFull) PickUp();
+            if(playerCanPick) PickUp();
         };
         dropAction.performed += _ =>
         {
@@ -84,14 +85,15 @@ public class PickUpController : MonoBehaviour
         // Check if player is in range and looking at the gun
         Vector3 direction = player.position - transform.position;
         float angle = Vector3.Angle(direction, fpsCam.forward * -1);
-        Debug.Log(angle);
 
-        if (Vector3.Distance(transform.position, player.position) < pickUpRange && angle < 30f)
+        if (Vector3.Distance(transform.position, player.position) < pickUpRange && angle < 30f && !slotFull && !equipped)
         {
+            GameObject.FindGameObjectWithTag("InteractionText").GetComponent<TextMeshProUGUI>().text = "[E] to pick up";
             playerCanPick = true;
         }
         else
         {
+            GameObject.FindGameObjectWithTag("InteractionText").GetComponent<TextMeshProUGUI>().text = "";
             playerCanPick = false;
         }
     }

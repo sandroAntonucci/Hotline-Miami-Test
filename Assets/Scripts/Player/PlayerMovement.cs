@@ -170,7 +170,8 @@ public class PlayerMovement : MonoBehaviour
             slideTimer = slideDuration;
 
             // Start a coroutine to smoothly transition to the slide height
-            StartCoroutine(LerpHeight(originalHeight, slideHeight, 0.2f)); // Adjust the duration (0.2f) as needed
+            StartCoroutine(LerpHeight(originalHeight, slideHeight, 0.2f));
+            StartCoroutine(CameraEffects.Instance.ChangeFOV(90f, 0.2f));
         }
     }
 
@@ -184,6 +185,7 @@ public class PlayerMovement : MonoBehaviour
 
             // Start a coroutine to smoothly transition back to the original height
             StartCoroutine(LerpHeight(slideHeight, originalHeight, 0.2f)); // Adjust the duration (0.2f) as needed
+            StartCoroutine(CameraEffects.Instance.ChangeFOV(70f, 0.2f));
         }
     }
 
@@ -199,7 +201,6 @@ public class PlayerMovement : MonoBehaviour
 
             // Re-scales item holder so it isnt affected by the change in height
             itemHolder.transform.localScale = new Vector3(itemHolder.transform.localScale.x, 1 / newHeight, itemHolder.transform.localScale.z);
-
 
 
             elapsedTime += Time.deltaTime;
