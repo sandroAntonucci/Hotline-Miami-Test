@@ -2,24 +2,68 @@ using StarterAssets;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 public class PickUpController : MonoBehaviour
 {
+    [Header("PICK UP VARIABLES")]
+    [SerializeField] private float pickUpRange;
+    [SerializeField] private float dropForwardForce;
+    [SerializeField] private float dropUpwardForce;
 
-    public BaseGun gunScript;
-    public Rigidbody rb;
-    public BoxCollider coll;
-    public Transform player, gunContainer, fpsCam;
+    [SerializeField] private InputActionAsset PlayerControls;
 
-    public float pickUpRange;
-    public float dropForwardForce, dropUpwardForce;
+    private BaseGun gunScript;
+    private Rigidbody rb;
+    private BoxCollider coll;
+    private Transform player, gunContainer, fpsCam;
 
-    public bool equipped;
-    public static bool slotFull;
+    private InputAction pickAction;
+    private InputAction dropAction;
+
+    private bool equipped;
+    private static bool slotFull;
+    public bool playerCanPick;
+
+    private void Awake()
+    {
+        pickAction = PlayerControls.FindAction("PickUp");
+        dropAction = PlayerControls.FindAction("Drop");
+
+        pickAction.performed += _ =>
+        {
+            if(!equipped && playerCanPick && !slotFull) PickUp();
+        };
+        dropAction.performed += _ =>
+        {
+            if(equipped) Drop();
+        };
+    }
+
+    private void OnEnable()
+    {
+        pickAction.Enable();
+        dropAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        pickAction.Disable();
+        dropAction.Disable();
+    }
 
     private void Start()
     {
+
+        // Assign components
+        gunScript = GetComponent<BaseGun>();
+        rb = GetComponent<Rigidbody>();
+        coll = GetComponent<BoxCollider>();
+        player = GameObject.Find("Player").transform;
+        gunContainer = GameObject.Find("ItemHolder").transform;
+        fpsCam = GameObject.Find("Main Camera").transform;
+
         if (!equipped)
         {
             gunScript.enabled = false;
@@ -37,11 +81,19 @@ public class PickUpController : MonoBehaviour
 
     private void Update()
     {
-        Vector3 distanceToPlayer = player.position - transform.position;
+        // Check if player is in range and looking at the gun
+        Vector3 direction = player.position - transform.position;
+        float angle = Vector3.Angle(direction, fpsCam.forward * -1);
+        Debug.Log(angle);
 
-        if (!equipped && distanceToPlayer.magnitude <= pickUpRange && Input.GetKeyDown(KeyCode.E) && !slotFull) PickUp();
-
-        if (equipped && Input.GetKeyDown(KeyCode.Q)) Drop();
+        if (Vector3.Distance(transform.position, player.position) < pickUpRange && angle < 30f)
+        {
+            playerCanPick = true;
+        }
+        else
+        {
+            playerCanPick = false;
+        }
     }
 
     private void PickUp()

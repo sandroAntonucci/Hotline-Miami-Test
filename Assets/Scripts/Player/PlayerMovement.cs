@@ -50,6 +50,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 currentMovement = Vector3.zero;
     private CharacterController characterController;
 
+    private GameObject itemHolder;
+
     private InputAction moveAction;
     private InputAction lookAction;
     private InputAction sprintAction;
@@ -64,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
         mainCamera = Camera.main;
         originalHeight = gameObject.transform.localScale.y;
         originalSlideSpeedMultiplier = slideSpeedMultiplier;
+        itemHolder = GameObject.FindGameObjectWithTag("ItemHolder");
 
         moveAction = PlayerControls.FindActionMap("Player").FindAction("Move");
         lookAction = PlayerControls.FindActionMap("Player").FindAction("Look");
@@ -193,6 +196,11 @@ public class PlayerMovement : MonoBehaviour
             // Interpolate the height
             float newHeight = Mathf.Lerp(fromHeight, toHeight, elapsedTime / duration);
             gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, newHeight, gameObject.transform.localScale.z);
+
+            // Re-scales item holder so it isnt affected by the change in height
+            itemHolder.transform.localScale = new Vector3(itemHolder.transform.localScale.x, 1 / newHeight, itemHolder.transform.localScale.z);
+
+
 
             elapsedTime += Time.deltaTime;
             yield return null;
