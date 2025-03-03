@@ -116,7 +116,6 @@ public class PickUpController : MonoBehaviour
 
         // Enable script
         gunScript.enabled = true;
-
     }
 
     private void Drop()
