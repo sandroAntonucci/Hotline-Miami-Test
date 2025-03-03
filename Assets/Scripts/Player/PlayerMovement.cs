@@ -149,6 +149,8 @@ public class PlayerMovement : MonoBehaviour
         currentMovement.y = verticalVelocity;
         characterController.Move(currentMovement * Time.deltaTime);
         isMoving = moveInput.sqrMagnitude > 0;
+
+        mainCamera.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z);
     }
 
     // Player rotation / camera look
@@ -159,7 +161,7 @@ public class PlayerMovement : MonoBehaviour
 
         verticalRotation -= lookInput.y * mouseSensitivity;
         verticalRotation = Mathf.Clamp(verticalRotation, -upDownRange, upDownRange);
-        mainCamera.transform.localRotation = Quaternion.Euler(verticalRotation, 0, 0);
+        mainCamera.transform.localRotation = Quaternion.Euler(verticalRotation, gameObject.transform.localRotation.eulerAngles.y, 0);
     }
 
     private void StartSlide()
@@ -198,10 +200,6 @@ public class PlayerMovement : MonoBehaviour
             // Interpolate the height
             float newHeight = Mathf.Lerp(fromHeight, toHeight, elapsedTime / duration);
             gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, newHeight, gameObject.transform.localScale.z);
-
-            // Re-scales item holder so it isnt affected by the change in height
-            itemHolder.transform.localScale = new Vector3(itemHolder.transform.localScale.x, 1 / newHeight, itemHolder.transform.localScale.z);
-
 
             elapsedTime += Time.deltaTime;
             yield return null;
