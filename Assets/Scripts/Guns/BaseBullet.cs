@@ -62,6 +62,8 @@ public class BaseBullet : MonoBehaviour
 
     private IEnumerator DestroyAfterDelay()
     {
+        rb.velocity *= 0.1f;
+
         hitEffectOne.transform.parent = null;
         hitEffectOne.Play();
 
