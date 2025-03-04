@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro.Examples;
 using UnityEngine;
 
@@ -5,15 +6,42 @@ public class BaseBullet : MonoBehaviour
 {
     // The bullet's movement speed
     public float speed = 5f;
+    public float lifeDuration = 2f;
 
     public BulletPool bulletPool;
 
+    public ParticleSystem hitEffectOne;
+    public ParticleSystem hitEffectTwo;
+
     private Rigidbody rb;
+
+    private Coroutine DestroyCoroutine;
 
     private void OnEnable()
     {
         rb = GetComponent<Rigidbody>();
-        rb.velocity = transform.right * -1 * speed;
+
+
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+        rb.useGravity = false;
+
+        // Draws raycast from the camera to know where the bullet is going
+        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+        RaycastHit hit;
+
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            // The direction of the bullet is the hit point minus the bullet's position
+            Vector3 direction = (hit.point - transform.position).normalized;
+
+            // The bullet's velocity is the direction multiplied by the speed
+            rb.velocity = direction * speed;
+        }
+        else
+        {
+            rb.velocity = transform.right * -1 * speed;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -26,9 +54,32 @@ public class BaseBullet : MonoBehaviour
 
         if (!collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log(collision.gameObject.name);
-            ReturnToPool();
+            if (DestroyCoroutine != null) return;
+
+            DestroyCoroutine = StartCoroutine(DestroyAfterDelay());
         }
+    }
+
+    private IEnumerator DestroyAfterDelay()
+    {
+        hitEffectOne.transform.parent = null;
+        hitEffectOne.Play();
+
+        hitEffectTwo.transform.parent = null;
+        hitEffectTwo.Play();
+
+        rb.useGravity = true;
+        rb.constraints = RigidbodyConstraints.None;
+        yield return new WaitForSeconds(lifeDuration);
+        DestroyCoroutine = null;
+
+        hitEffectOne.transform.parent = gameObject.transform;
+        hitEffectOne.transform.localPosition = Vector3.zero;
+
+        hitEffectTwo.transform.parent = gameObject.transform;
+        hitEffectTwo.transform.localPosition = Vector3.zero;
+
+        ReturnToPool();
     }
 
     private void ReturnToPool()

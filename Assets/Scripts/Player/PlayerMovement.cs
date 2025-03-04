@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+
+    public static PlayerMovement Instance { get; private set; }
+
     [Header("Movement Speed")]
     [SerializeField] private float walkSpeed = 3f;
     [SerializeField] private float sprintMultiplier = 2f;
@@ -46,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isMoving;
     private float nextStepTime;
     private Camera mainCamera;
-    private float verticalRotation;
+    public float verticalRotation;
     private Vector3 currentMovement = Vector3.zero;
     private CharacterController characterController;
 
@@ -62,6 +65,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         characterController = GetComponent<CharacterController>();
         mainCamera = Camera.main;
         originalHeight = gameObject.transform.localScale.y;
