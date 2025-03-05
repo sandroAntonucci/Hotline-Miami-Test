@@ -56,6 +56,8 @@ public class BaseBullet : MonoBehaviour
         {
             if (DestroyCoroutine != null) return;
 
+            BulletHoleDecalPool.Instance.SpawnBulletHole(collision.contacts[0].point, collision.contacts[0].normal);
+
             DestroyCoroutine = StartCoroutine(DestroyAfterDelay());
         }
     }
@@ -80,6 +82,7 @@ public class BaseBullet : MonoBehaviour
 
         hitEffectTwo.transform.parent = gameObject.transform;
         hitEffectTwo.transform.localPosition = Vector3.zero;
+
 
         ReturnToPool();
     }
