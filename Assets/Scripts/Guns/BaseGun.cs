@@ -22,6 +22,8 @@ public abstract class BaseGun : MonoBehaviour
 
     [SerializeField] private GameObject muzzleFlash;
 
+    [SerializeField] private Light shotLight;
+
     public InputActionAsset PlayerControls;
     private InputAction shootAction;
 
@@ -91,9 +93,22 @@ public abstract class BaseGun : MonoBehaviour
         // Randomize the rotation of the muzzle flash
         muzzleFlash.transform.localEulerAngles = new Vector3(Random.Range(0, 360), 180, 0);
 
-        yield return new WaitForSeconds(0.1f);
+        while(muzzleFlash.transform.localScale.x < 0.01)
+        {
+            shotLight.intensity += 0.6f;
+            muzzleFlash.transform.localScale += new Vector3(0.008f, 0.008f, 0.008f);
+            yield return null;
+        }
+
+        while (muzzleFlash.transform.localScale.x > 0)
+        {
+            shotLight.intensity -= 0.3f;
+            muzzleFlash.transform.localScale -= new Vector3(0.004f, 0.004f, 0.004f);
+            yield return null;
+        }
 
         muzzleFlash.SetActive(false);
+
     }
 
     public virtual void StartShooting()
@@ -108,13 +123,18 @@ public abstract class BaseGun : MonoBehaviour
 
     private IEnumerator ShootCooldown()
     {
-        canShoot = false;
+        canShoot = false;   
         yield return new WaitForSeconds(fireRate);
         canShoot = true;
     }
 
     private void ApplyRecoil()
     {
-        transform.rotation = transform.rotation * Quaternion.Euler(0f,0f,-recoilStrength);
+        recoilStrength = fireRate * 30;
+        recoilRecoverySpeed = 2 / fireRate;
+        CameraEffects.Instance.recoil.recoil(-recoilStrength);
+        float rand = Random.Range(-recoilStrength / 1.5f, recoilStrength / 1.5f);
+        transform.rotation = transform.rotation * Quaternion.Euler(0f, rand, -recoilStrength);
     }
+
 }

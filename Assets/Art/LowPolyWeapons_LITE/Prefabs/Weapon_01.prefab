@@ -208,6 +208,8 @@ MonoBehaviour:
   currentAmmo: 12
   bulletPrefab: {fileID: 3575611928538805115, guid: 745a87995944ab94caa447ec2061dbc4, type: 3}
   shootPosition: {fileID: 430074672213510753}
+  recoilStrength: 5
+  recoilRecoverySpeed: 1
   muzzleFlash: {fileID: 5946017559500064212}
   PlayerControls: {fileID: -944628639613478452, guid: 4a1a05656139ec942b117e261a77dfc6, type: 3}
 --- !u!65 &3065351657393547977
@@ -658,19 +660,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: e5727721799e00f44906e7af53883073, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: e5727721799e00f44906e7af53883073, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.02
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: e5727721799e00f44906e7af53883073, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.02
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: e5727721799e00f44906e7af53883073, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.02
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: e5727721799e00f44906e7af53883073, type: 3}
       propertyPath: m_LocalPosition.x

@@ -27,6 +27,8 @@ public class PickUpController : MonoBehaviour
     private static bool slotFull;
     public bool playerCanPick;
 
+    private Ray cameraRay;
+
     private void Awake()
     {
         pickAction = PlayerControls.FindAction("PickUp");
@@ -59,11 +61,11 @@ public class PickUpController : MonoBehaviour
 
         // Assign components
         gunScript = GetComponent<BaseGun>();
+        fpsCam = GameObject.Find("Main Camera").transform;
         rb = GetComponent<Rigidbody>();
         coll = GetComponent<BoxCollider>();
         player = GameObject.Find("Player").transform;
         gunContainer = GameObject.Find("ItemHolder").transform;
-        fpsCam = GameObject.Find("Main Camera").transform;
 
         if (!equipped)
         {
@@ -84,9 +86,10 @@ public class PickUpController : MonoBehaviour
     {
         // Check if player is in range and looking at the gun
         Vector3 direction = player.position - transform.position;
-        float angle = Vector3.Angle(direction, fpsCam.forward * -1);
+        cameraRay = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+        float angle = Vector3.Angle(direction, -cameraRay.direction );
 
-        if (Vector3.Distance(transform.position, player.position) < pickUpRange && angle < 30f && !slotFull && !equipped)
+        if (Vector3.Distance(transform.position, player.position) < pickUpRange && angle < 10f && !slotFull && !equipped)
         {
             GameObject.FindGameObjectWithTag("InteractionText").GetComponent<TextMeshProUGUI>().text = "[E] to pick up";
             playerCanPick = true;

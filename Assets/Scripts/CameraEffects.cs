@@ -9,6 +9,8 @@ public class CameraEffects : MonoBehaviour
 
     public Camera mainCamera;
 
+    public ProceduralRecoil recoil;
+
     private void Awake()
     {
         if (Instance == null)
@@ -40,5 +42,7 @@ public class CameraEffects : MonoBehaviour
 
         mainCamera.fieldOfView = targetFOV;
     }
+
+
 
 }
