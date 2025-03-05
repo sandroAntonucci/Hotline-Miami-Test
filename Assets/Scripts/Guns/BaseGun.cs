@@ -14,6 +14,11 @@ public abstract class BaseGun : MonoBehaviour
     public GameObject bulletPrefab;  // Bullet prefab is still needed for pool creation
     public Transform shootPosition;
 
+    public float recoilStrength = 5f; // Adjust this value to control how strong the recoil is
+    public float recoilRecoverySpeed = 1.0f;
+    private Quaternion startingRotation = Quaternion.Euler(0f,0f,0f);
+    private Quaternion targetRotation;
+
 
     [SerializeField] private GameObject muzzleFlash;
 
@@ -53,6 +58,11 @@ public abstract class BaseGun : MonoBehaviour
         {
             Shoot();
         }
+
+        if (startingRotation != null)
+        {
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, startingRotation, Time.deltaTime * recoilRecoverySpeed);
+        }  
     }
 
     public virtual void Shoot()
@@ -71,6 +81,7 @@ public abstract class BaseGun : MonoBehaviour
         // Get a bullet from the pool
         GameObject bullet = BulletPool.Instance.GetBullet(shootPosition.position, shootPosition.rotation);
 
+        ApplyRecoil();
     }
 
     private IEnumerator ShowMuzzleFlash()
@@ -100,5 +111,10 @@ public abstract class BaseGun : MonoBehaviour
         canShoot = false;
         yield return new WaitForSeconds(fireRate);
         canShoot = true;
+    }
+
+    private void ApplyRecoil()
+    {
+        transform.rotation = transform.rotation * Quaternion.Euler(0f,0f,-recoilStrength);
     }
 }
