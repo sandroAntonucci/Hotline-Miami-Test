@@ -35,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float slideCooldown = 2f; // Cooldown before the player can slide again
     [SerializeField] CameraStep cameraStep;
 
+
     private float originalSlideSpeedMultiplier;
 
     private float originalHeight; 
@@ -50,7 +51,6 @@ public class PlayerMovement : MonoBehaviour
     private bool isMoving;
     private float nextStepTime;
     private Camera mainCamera;
-    private GameObject cameraHolder;
     public float verticalRotation;
     private Vector3 currentMovement = Vector3.zero;
     private CharacterController characterController;
@@ -79,7 +79,6 @@ public class PlayerMovement : MonoBehaviour
 
         characterController = GetComponent<CharacterController>();
         mainCamera = Camera.main;
-        cameraHolder = GameObject.FindGameObjectWithTag("CameraHolder");
         originalHeight = gameObject.transform.localScale.y;
         originalSlideSpeedMultiplier = slideSpeedMultiplier;
         itemHolder = GameObject.FindGameObjectWithTag("ItemHolder");
@@ -167,23 +166,24 @@ public class PlayerMovement : MonoBehaviour
         characterController.Move(currentMovement * Time.deltaTime);
         isMoving = moveInput.sqrMagnitude > 0;
 
-        cameraHolder.transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+        mainCamera.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z);
     }
 
-    // Player rotation / camera look
     private void HandleRotation()
     {
+        // Get mouse input (assuming lookInput is populated elsewhere)
         float mouseXRotation = lookInput.x * mouseSensitivity;
+        float mouseYRotation = lookInput.y * mouseSensitivity;
+
+        // Rotate the player object (Y-axis only)
         transform.Rotate(0, mouseXRotation, 0);
 
-        verticalRotation -= lookInput.y * mouseSensitivity;
+        // Handle vertical rotation separately for the camera
+        verticalRotation -= mouseYRotation;
         verticalRotation = Mathf.Clamp(verticalRotation, -upDownRange, upDownRange);
 
-        // Fix: Use Quaternion.AngleAxis to create smooth rotation
-        Quaternion xRotation = Quaternion.Euler(verticalRotation, 0, 0);
-        Quaternion yRotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-
-        mainCamera.transform.rotation = yRotation * xRotation; // Apply rotation correctly
+        // Apply vertical rotation to the camera ONLY (localRotation)
+        mainCamera.transform.localRotation = Quaternion.Euler(verticalRotation, 0, 0);
     }
 
 
