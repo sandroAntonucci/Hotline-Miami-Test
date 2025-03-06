@@ -21,6 +21,7 @@ public class CameraStep : MonoBehaviour
     private void Update()
     {
         HandleCameraBobbing();
+        
         transform.position = new Vector3(cameraPosition.position.x, cameraPosition.position.y + bobOffset, cameraPosition.position.z);
     }
 
@@ -35,12 +36,6 @@ public class CameraStep : MonoBehaviour
         {
             timer += Time.deltaTime * bobFrequency * speed; // Scale bobbing with speed
             bobOffset = Mathf.Sin(timer) * bobAmplitude;
-        }
-        else
-        {
-            timer = 0; // Reset when stopped to avoid jerky behavior
-            bobOffset = Mathf.Lerp(bobOffset, 0f, Time.deltaTime * 3f); // Smoothly return to original position
-            transform.localPosition = Vector3.Lerp(transform.localPosition, originalPosition, Time.deltaTime * 5f);
         }
 
     }
