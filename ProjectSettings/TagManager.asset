@@ -8,6 +8,7 @@ TagManager:
   - Gun
   - InteractionText
   - Enemy
+  - CameraHolder
   layers:
   - Default
   - TransparentFX

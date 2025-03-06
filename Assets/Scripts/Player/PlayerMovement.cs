@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float slideSpeedMultiplier = 2f; // Speed multiplier during the slide
     [SerializeField] private float slideHeight = 0.5f; // Height of the character controller during the slide
     [SerializeField] private float slideCooldown = 2f; // Cooldown before the player can slide again
-
+    [SerializeField] CameraStep cameraStep;
 
     private float originalSlideSpeedMultiplier;
 
@@ -50,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isMoving;
     private float nextStepTime;
     private Camera mainCamera;
+    private GameObject cameraHolder;
     public float verticalRotation;
     private Vector3 currentMovement = Vector3.zero;
     private CharacterController characterController;
@@ -78,6 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
         characterController = GetComponent<CharacterController>();
         mainCamera = Camera.main;
+        cameraHolder = GameObject.FindGameObjectWithTag("CameraHolder");
         originalHeight = gameObject.transform.localScale.y;
         originalSlideSpeedMultiplier = slideSpeedMultiplier;
         itemHolder = GameObject.FindGameObjectWithTag("ItemHolder");
@@ -124,6 +126,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isSliding)
         {
+            
             slideTimer -= Time.deltaTime;
             slideSpeedMultiplier = originalSlideSpeedMultiplier * (slideTimer / slideDuration) * 2;
             if (slideTimer <= 0f)
@@ -164,7 +167,7 @@ public class PlayerMovement : MonoBehaviour
         characterController.Move(currentMovement * Time.deltaTime);
         isMoving = moveInput.sqrMagnitude > 0;
 
-        mainCamera.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z);
+        cameraHolder.transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
     }
 
     // Player rotation / camera look
@@ -175,8 +178,14 @@ public class PlayerMovement : MonoBehaviour
 
         verticalRotation -= lookInput.y * mouseSensitivity;
         verticalRotation = Mathf.Clamp(verticalRotation, -upDownRange, upDownRange);
-        mainCamera.transform.localRotation = Quaternion.Euler(verticalRotation, gameObject.transform.localRotation.eulerAngles.y, 0);
+
+        // Fix: Use Quaternion.AngleAxis to create smooth rotation
+        Quaternion xRotation = Quaternion.Euler(verticalRotation, 0, 0);
+        Quaternion yRotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+
+        mainCamera.transform.rotation = yRotation * xRotation; // Apply rotation correctly
     }
+
 
     private void StartSlide()
     {
@@ -184,6 +193,7 @@ public class PlayerMovement : MonoBehaviour
         {
             isSliding = true;
             slideTimer = slideDuration;
+            cameraStep.enabled = false;
 
             // Start a coroutine to smoothly transition to the slide height
             StartCoroutine(LerpHeight(originalHeight, slideHeight, 0.2f));
@@ -197,6 +207,7 @@ public class PlayerMovement : MonoBehaviour
         {
             isSliding = false;
             slideCooldownTimer = slideCooldown;
+            cameraStep.enabled = true;
             slideSpeedMultiplier = originalSlideSpeedMultiplier;
 
             // Start a coroutine to smoothly transition back to the original height

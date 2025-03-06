@@ -38,5 +38,11 @@ public class CameraStep : MonoBehaviour
             bobOffset = Mathf.Sin(timer) * bobAmplitude;
         }
 
+        else
+        {
+            timer = 0f;
+            bobOffset = Mathf.Lerp(bobOffset, 0f, Time.deltaTime * 2f); // Smoothly return to original position
+        }
+
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ProceduralRecoil : MonoBehaviour
 {
-    Vector3 currentRotation, targetRotation, targetPosition, currentPosition, initialGunPosition;
+    Vector3 currentRotation, targetRotation, currentPosition, targetPosition, initialGunPosition;
     public Transform cameraHolder, currentCameraRotation;
 
     [SerializeField] float recoilX;
@@ -13,11 +13,12 @@ public class ProceduralRecoil : MonoBehaviour
 
     [SerializeField] float kickBackZ;
 
-    public float snapiness, returnAmount;
+    public float snapiness = 10f;
+    public float returnAmount = 5f;
 
     private void Start()
     {
-        initialGunPosition = transform.localPosition;
+        initialGunPosition = transform.localPosition; // Initialize starting position
     }
 
     private void Update()
@@ -28,26 +29,27 @@ public class ProceduralRecoil : MonoBehaviour
         transform.localRotation = Quaternion.Euler(currentRotation);
 
         // Smoothly bring the gun back to its initial position
-        back();
+        //BackToInitialPosition();
     }
 
-    public void recoil(float recoil)
+    public void Recoil(float recoilAmount)
     {
-        recoilX = recoil;
+        recoilX = recoilAmount;
 
-        // Apply recoil in the camera's local space, relative to the camera's current rotation
+        // Apply recoil in the camera's local space
         Vector3 recoilDirection = new Vector3(recoilX, Random.Range(-recoilY, recoilY), Random.Range(-recoilZ, recoilZ));
 
-        // Apply the recoil based on the camera's orientation (currentCameraRotation is used for local space conversion)
-        recoilDirection = currentCameraRotation.TransformDirection(recoilDirection);  // Convert recoil to world space relative to the camera
+        // Convert recoil to world space relative to the camera's rotation
+        recoilDirection = currentCameraRotation.TransformDirection(recoilDirection);
 
-        // Apply the recoil in world space (move the gun back)
-        targetPosition -= new Vector3(0, 0, kickBackZ);
+        // Apply rotation recoil
         targetRotation += recoilDirection;
 
+        // Apply positional recoil (kickback)
+        targetPosition = initialGunPosition - new Vector3(0, 0, kickBackZ);
     }
 
-    void back()
+    void BackToInitialPosition()
     {
         // Smoothly return the gun to its initial position
         targetPosition = Vector3.Lerp(targetPosition, initialGunPosition, Time.deltaTime * returnAmount);
@@ -55,3 +57,4 @@ public class ProceduralRecoil : MonoBehaviour
         transform.localPosition = currentPosition;
     }
 }
+

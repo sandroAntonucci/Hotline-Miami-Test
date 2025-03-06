@@ -7,6 +7,7 @@ public class BulletHoleDecalPool : MonoBehaviour
 
     public static BulletHoleDecalPool Instance;
 
+    public Sprite[] sprites;
     public GameObject bulletHolePrefab; // Assign a bullet hole prefab in the Inspector
     public int poolSize = 20; // Number of decals to pool
     private Queue<GameObject> bulletHolePool;
@@ -33,9 +34,10 @@ public class BulletHoleDecalPool : MonoBehaviour
     public void SpawnBulletHole(Vector3 position, Vector3 normal)
     {
         GameObject bulletHole = bulletHolePool.Dequeue();
+        bulletHole.GetComponent<SpriteRenderer>().sprite = sprites[Random.Range(0, sprites.Length)];
         bulletHole.transform.position = position + normal * 0.001f;
         bulletHole.transform.rotation = Quaternion.LookRotation(normal);
-        bulletHole.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+        bulletHole.transform.localScale = new Vector3(0.08f, 0.08f, 0.08f);
         bulletHole.SetActive(true);
 
         StartCoroutine(FadeOutBulletHole(bulletHole));
@@ -57,7 +59,7 @@ public class BulletHoleDecalPool : MonoBehaviour
 
         bulletHole.SetActive(false);
 
-        bulletHole.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+        bulletHole.transform.localScale = new Vector3(0.08f, 0.08f, 0.08f);
     }
 }
 

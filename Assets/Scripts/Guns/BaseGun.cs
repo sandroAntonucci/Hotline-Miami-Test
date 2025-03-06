@@ -95,10 +95,12 @@ public abstract class BaseGun : MonoBehaviour
 
         while(muzzleFlash.transform.localScale.x < 0.01)
         {
-            shotLight.intensity += 0.6f;
+            shotLight.intensity += 0.3f;
             muzzleFlash.transform.localScale += new Vector3(0.008f, 0.008f, 0.008f);
             yield return null;
         }
+
+        yield return new WaitForSeconds(0.05f);
 
         while (muzzleFlash.transform.localScale.x > 0)
         {
@@ -132,7 +134,7 @@ public abstract class BaseGun : MonoBehaviour
     {
         recoilStrength = fireRate * 30;
         recoilRecoverySpeed = 2 / fireRate;
-        CameraEffects.Instance.recoil.recoil(-recoilStrength);
+        CameraEffects.Instance.recoil.Recoil(-recoilStrength);
         float rand = Random.Range(-recoilStrength / 2f, recoilStrength / 2f);
         transform.rotation = transform.rotation * Quaternion.Euler(0f, rand, -recoilStrength);
     }
