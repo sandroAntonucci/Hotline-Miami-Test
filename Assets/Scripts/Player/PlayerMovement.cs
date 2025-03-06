@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float slideHeight = 0.5f; // Height of the character controller during the slide
     [SerializeField] private float slideCooldown = 2f; // Cooldown before the player can slide again
 
+
     private float originalSlideSpeedMultiplier;
 
     private float originalHeight; 
@@ -222,7 +223,7 @@ public class PlayerMovement : MonoBehaviour
         gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, toHeight, gameObject.transform.localScale.z);
     }
 
-    /* Handle footstep sounds 
+    /*
     private void HandleFootsteps()
     {
         float currentStepInterval = sprintAction.ReadValue<float>() > 0 ? sprintStepInterval : walkStepInterval;
@@ -230,10 +231,11 @@ public class PlayerMovement : MonoBehaviour
         if (characterController.isGrounded && isMoving && Time.time > nextStepTime && characterController.velocity.magnitude > velocityThreshold)
         {
             nextStepTime = Time.time + currentStepInterval;
-            PlayFootstepSounds();
+            cameraMovement.StepCamera();
+            //PlayFootstepSounds();
         }
-    }
-    */
+    }*/
+    
 
     /* Play a random footstep sound 
     private void PlayFootstepSounds()

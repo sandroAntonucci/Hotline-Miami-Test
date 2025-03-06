@@ -473,14 +473,15 @@ MonoBehaviour:
   upDownRange: 80
   footstepSource: {fileID: 0}
   footstepSounds: []
-  walkStepInterval: 0.5
-  sprintStepInterval: 0.3
+  walkStepInterval: 0.3
+  sprintStepInterval: 0.15
   velocityThreshold: 2
   PlayerControls: {fileID: -944628639613478452, guid: 4a1a05656139ec942b117e261a77dfc6, type: 3}
   slideDuration: 0.6
   slideSpeedMultiplier: 1.8
   slideHeight: 0.5
   slideCooldown: 1.2
+  cameraMovement: {fileID: 1040253216}
   verticalRotation: 0
 --- !u!143 &530991632
 CharacterController:
@@ -819,6 +820,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1040253215}
   - component: {fileID: 1040253216}
+  - component: {fileID: 1040253217}
   m_Layer: 6
   m_Name: CameraHolder
   m_TagString: Untagged
@@ -859,6 +861,25 @@ MonoBehaviour:
   recoilY: 2
   recoilZ: 3
   kickBackZ: 0.3
+  snapiness: 5
+  returnAmount: 8
+--- !u!114 &1040253217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040253214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07e89c69e28b612489c442967ecf3247, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 1040253215}
+  recoilX: -2
+  recoilY: 2
+  recoilZ: 2
+  kickBackZ: 0.1
   snapiness: 5
   returnAmount: 8
 --- !u!1001 &1455160794
