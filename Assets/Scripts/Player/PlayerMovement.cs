@@ -31,7 +31,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float slideCooldown = 2f; // Cooldown before the player can slide again
     [SerializeField] CameraStep cameraStep;
 
-
     private float originalSlideSpeedMultiplier;
 
     private float originalHeight; 
@@ -44,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     private float verticalVelocity; 
 
     private int lastPlayedIndex = -1;
-    private bool isMoving;
+    public bool isMoving;
     private float nextStepTime;
     private Vector3 currentMovement = Vector3.zero;
     private CharacterController characterController;
