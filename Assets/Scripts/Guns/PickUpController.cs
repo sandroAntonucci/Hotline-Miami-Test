@@ -91,12 +91,18 @@ public class PickUpController : MonoBehaviour
 
         if (Vector3.Distance(transform.position, player.position) < pickUpRange && angle < 10f && !slotFull && !equipped)
         {
-            GameObject.FindGameObjectWithTag("InteractionText").GetComponent<TextMeshProUGUI>().text = "[E] to pick up";
+            foreach(var gO in GameObject.FindGameObjectsWithTag("InteractionText"))
+            {
+                gO.GetComponent<TextMeshProUGUI>().text = "[E] TO PICK UP";
+            }
             playerCanPick = true;
         }
         else
         {
-            GameObject.FindGameObjectWithTag("InteractionText").GetComponent<TextMeshProUGUI>().text = "";
+            foreach (var gO in GameObject.FindGameObjectsWithTag("InteractionText"))
+            {
+                gO.GetComponent<TextMeshProUGUI>().text = "";
+            }
             playerCanPick = false;
         }
     }
