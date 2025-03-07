@@ -106,20 +106,40 @@ public class PickUpController : MonoBehaviour
         equipped = true;
         slotFull = true;
 
-        // Set position and parent of the gun
-        transform.SetParent(gunContainer);
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.Euler(Vector3.zero);
-        transform.localScale = Vector3.one;
-
-        // Make Rigidbody kinematic and BoxCollider a trigger
+        // Disable physics
         rb.isKinematic = true;
         rb.interpolation = RigidbodyInterpolation.None;
         coll.isTrigger = true;
 
+        // Start moving the gun smoothly
+        StartCoroutine(MoveToGunContainer());
+
         // Enable script
         gunScript.enabled = true;
     }
+
+    private IEnumerator MoveToGunContainer()
+    {
+        float duration = 0.2f; // Adjust this for faster/slower movement
+        float elapsedTime = 0f;
+        Vector3 startPosition = transform.position;
+        Quaternion startRotation = transform.rotation;
+
+        while (elapsedTime < duration)
+        {
+            transform.position = Vector3.Lerp(startPosition, gunContainer.position, elapsedTime / duration);
+            transform.rotation = Quaternion.Lerp(startRotation, gunContainer.rotation, elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+            yield return null; // Wait for next frame
+        }
+
+        // Ensure final position and rotation match perfectly
+        transform.SetParent(gunContainer);
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+        transform.localScale = Vector3.one;
+    }
+
 
     private void Drop()
     {
