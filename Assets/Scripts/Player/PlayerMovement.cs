@@ -40,7 +40,9 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 targetMovement = Vector3.zero;
     private Vector3 currentVelocity = Vector3.zero;
-    private float verticalVelocity; 
+    private float verticalVelocity;
+
+    [SerializeField] GameObject cameraSlideHolder;
 
     private int lastPlayedIndex = -1;
     public bool isMoving;
@@ -84,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
     
 
         characterController = GetComponent<CharacterController>();
-        originalHeight = gameObject.transform.localScale.y;
+        originalHeight = cameraSlideHolder.transform.localPosition.y;
         originalSlideSpeedMultiplier = slideSpeedMultiplier;
         itemHolder = GameObject.FindGameObjectWithTag("ItemHolder");
 
@@ -102,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
     {
         moveAction.Enable();
         sprintAction.Enable();
-        //slideAction.Enable();
+        slideAction.Enable();
     }
 
     private void OnDisable()
@@ -175,10 +177,9 @@ public class PlayerMovement : MonoBehaviour
         {
             isSliding = true;
             slideTimer = slideDuration;
-            cameraStep.enabled = false;
 
             // Start a coroutine to smoothly transition to the slide height
-            StartCoroutine(LerpHeight(originalHeight, slideHeight, 0.2f));
+            StartCoroutine(LerpCameraHeight(originalHeight, slideHeight, 0.2f, true));
             StartCoroutine(CameraEffects.Instance.ChangeFOV(90f, 0.2f));
         }
     }
@@ -189,31 +190,40 @@ public class PlayerMovement : MonoBehaviour
         {
             isSliding = false;
             slideCooldownTimer = slideCooldown;
-            cameraStep.enabled = true;
             slideSpeedMultiplier = originalSlideSpeedMultiplier;
 
             // Start a coroutine to smoothly transition back to the original height
-            StartCoroutine(LerpHeight(slideHeight, originalHeight, 0.2f)); // Adjust the duration (0.2f) as needed
+            StartCoroutine(LerpCameraHeight(slideHeight, originalHeight, 0.2f, false)); // Adjust the duration (0.2f) as needed
             StartCoroutine(CameraEffects.Instance.ChangeFOV(70f, 0.2f));
         }
     }
 
-    private IEnumerator LerpHeight(float fromHeight, float toHeight, float duration)
+    private IEnumerator LerpCameraHeight(float fromHeight, float toHeight, float duration, bool deactivateBobbing)
     {
         float elapsedTime = 0f;
+
+        if (deactivateBobbing)
+        {
+            cameraStep.enabled = false;
+        }
 
         while (elapsedTime < duration)
         {
             // Interpolate the height
             float newHeight = Mathf.Lerp(fromHeight, toHeight, elapsedTime / duration);
-            gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, newHeight, gameObject.transform.localScale.z);
+            cameraSlideHolder.transform.position += new Vector3(0, newHeight - cameraSlideHolder.transform.localPosition.y, 0);
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
+        if (!deactivateBobbing)
+        {
+            cameraStep.enabled = true;
+        }
+
         // Ensure the final height is set exactly
-        gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, toHeight, gameObject.transform.localScale.z);
+        cameraSlideHolder.transform.localPosition = new Vector3(0, toHeight, 0);
     }
 
     /*
