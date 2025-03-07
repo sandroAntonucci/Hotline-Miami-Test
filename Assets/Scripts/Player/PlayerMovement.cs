@@ -14,10 +14,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float deceleration = 10f;
 
-    [Header("Look Sensitivity")]
-    [SerializeField] private float mouseSensitivity = 2f;
-    [SerializeField] private float upDownRange = 80f;
-
     [Header("Footstep Sounds")]
     [SerializeField] private AudioSource footstepSource;
     [SerializeField] private AudioClip[] footstepSounds;
@@ -50,20 +46,20 @@ public class PlayerMovement : MonoBehaviour
     private int lastPlayedIndex = -1;
     private bool isMoving;
     private float nextStepTime;
-    private Camera mainCamera;
-    public float verticalRotation;
     private Vector3 currentMovement = Vector3.zero;
     private CharacterController characterController;
 
     private GameObject itemHolder;
 
     private InputAction moveAction;
-    private InputAction lookAction;
     private InputAction sprintAction;
 
     private Vector2 moveInput;
-    private Vector2 lookInput;
     private InputAction slideAction;
+
+    private PlayerRotate _rotate;
+    private PlayerRotate _rotateSmooth;
+    private PlayerRotate _currentRotate;
 
     private void Awake()
     {
@@ -77,22 +73,28 @@ public class PlayerMovement : MonoBehaviour
             Destroy(gameObject);
         }
 
+        _rotate = GetComponents<PlayerRotate>()[0];
+        _rotateSmooth = GetComponents<PlayerRotate>()[1];
+        _currentRotate = _rotateSmooth;
+
+#if UNITY_EDITOR
+        _currentRotate = _rotate;
+#else
+        _currentRotate = _rotateSmooth;
+#endif
+    
+
         characterController = GetComponent<CharacterController>();
-        mainCamera = Camera.main;
         originalHeight = gameObject.transform.localScale.y;
         originalSlideSpeedMultiplier = slideSpeedMultiplier;
         itemHolder = GameObject.FindGameObjectWithTag("ItemHolder");
 
         moveAction = PlayerControls.FindActionMap("Player").FindAction("Move");
-        lookAction = PlayerControls.FindActionMap("Player").FindAction("Look");
         sprintAction = PlayerControls.FindActionMap("Player").FindAction("Sprint");
         slideAction = PlayerControls.FindActionMap("Player").FindAction("Slide");
 
         moveAction.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         moveAction.canceled += ctx => moveInput = Vector2.zero;
-
-        lookAction.performed += ctx => lookInput = ctx.ReadValue<Vector2>();
-        lookAction.canceled += ctx => lookInput = Vector2.zero;
 
         slideAction.performed += ctx => StartSlide();
     }
@@ -100,23 +102,21 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         moveAction.Enable();
-        lookAction.Enable();
         sprintAction.Enable();
-        slideAction.Enable();
+        //slideAction.Enable();
     }
 
     private void OnDisable()
     {
         moveAction.Disable();
-        lookAction.Disable();
         sprintAction.Disable();
         slideAction.Disable();
     }
 
     private void Update()
     {
+        _currentRotate.Rotate();
         HandleMovement();
-        HandleRotation();
         //HandleFootsteps();
     }
 
@@ -166,25 +166,8 @@ public class PlayerMovement : MonoBehaviour
         characterController.Move(currentMovement * Time.deltaTime);
         isMoving = moveInput.sqrMagnitude > 0;
 
-        mainCamera.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.5f, gameObject.transform.position.z);
     }
 
-    private void HandleRotation()
-    {
-        // Get mouse input (assuming lookInput is populated elsewhere)
-        float mouseXRotation = lookInput.x * mouseSensitivity;
-        float mouseYRotation = lookInput.y * mouseSensitivity;
-
-        // Rotate the player object (Y-axis only)
-        transform.Rotate(0, mouseXRotation, 0);
-
-        // Handle vertical rotation separately for the camera
-        verticalRotation -= mouseYRotation;
-        verticalRotation = Mathf.Clamp(verticalRotation, -upDownRange, upDownRange);
-
-        // Apply vertical rotation to the camera ONLY (localRotation)
-        mainCamera.transform.localRotation = Quaternion.Euler(verticalRotation, 0, 0);
-    }
 
 
     private void StartSlide()

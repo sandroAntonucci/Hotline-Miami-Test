@@ -24,7 +24,7 @@ public class ProceduralRecoil : MonoBehaviour
     {
         // Smoothly return the rotation and position back to the initial state
         targetRotation = Vector3.Lerp(targetRotation, Vector3.zero, Time.deltaTime * returnAmount);
-        currentRotation = Vector3.Slerp(currentRotation, targetRotation, Time.deltaTime * snapiness);
+        currentRotation = Vector3.Lerp(currentRotation, targetRotation, Time.deltaTime * snapiness);
         transform.localRotation = Quaternion.Euler(currentRotation);
 
         // Smoothly bring the gun back to its initial position
