@@ -250,7 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volume: {fileID: 0}
-  hueSpeed: 100
+  hueSpeed: 50
 --- !u!1 &454678472
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,6 +342,7 @@ GameObject:
   - component: {fileID: 530991631}
   - component: {fileID: 530991634}
   - component: {fileID: 530991635}
+  - component: {fileID: 530991636}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -455,6 +456,20 @@ MonoBehaviour:
   _playerControls: {fileID: -944628639613478452, guid: 4a1a05656139ec942b117e261a77dfc6, type: 3}
   _smoothTime: 0.02
   _horiRotHelper: {fileID: 1476785105}
+--- !u!114 &530991636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530991630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26fc94339297d874b8056ba79ed88d1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerControls: {fileID: -944628639613478452, guid: 4a1a05656139ec942b117e261a77dfc6, type: 3}
+  itemHolder: {fileID: 2101095367}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
