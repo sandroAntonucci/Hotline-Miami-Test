@@ -32,11 +32,20 @@ public class BaseBullet : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            // The direction of the bullet is the hit point minus the bullet's position
-            Vector3 direction = (hit.point - transform.position).normalized;
 
-            // The bullet's velocity is the direction multiplied by the speed
-            rb.velocity = direction * speed;
+            if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAim>().isAiming)
+            {
+                rb.velocity = transform.right * -1 * speed;
+            }
+
+            else
+            {
+                // The direction of the bullet is the hit point minus the bullet's position
+                Vector3 direction = (hit.point - transform.position).normalized;
+
+                // The bullet's velocity is the direction multiplied by the speed
+                rb.velocity = direction * speed;
+            }
         }
         else
         {

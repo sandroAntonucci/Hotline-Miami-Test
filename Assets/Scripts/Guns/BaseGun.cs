@@ -135,7 +135,7 @@ public abstract class BaseGun : MonoBehaviour
         recoilStrength = fireRate * 30;
         recoilRecoverySpeed = 2 / fireRate;
         CameraEffects.Instance.recoil.recoil(-recoilStrength);
-        float rand = Random.Range(-recoilStrength / 2f, recoilStrength / 2f);
+        float rand = Random.Range(-recoilStrength / 3f, recoilStrength / 3f);
         transform.rotation = transform.rotation * Quaternion.Euler(0f, rand, -recoilStrength);
     }
 

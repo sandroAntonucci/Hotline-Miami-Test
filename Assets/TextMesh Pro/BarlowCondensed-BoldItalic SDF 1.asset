@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: BarlowCondensed-BoldItalic SDF
+  m_Name: BarlowCondensed-BoldItalic SDF 1
   m_EditorClassIdentifier: 
-  hashCode: -1804106151
+  hashCode: -1871545272
   material: {fileID: 5501879812719807127}
-  materialHashCode: -1446385447
+  materialHashCode: -1803612312
   m_Version: 1.1.0
   m_SourceFontFileGUID: 94b08d47a8463c34abc6a3dae2d581bb
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: 94b08d47a8463c34abc6a3dae2d581bb, type: 3}
@@ -971,7 +971,7 @@ Material:
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0.15
+    - _OutlineWidth: 0
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
     - _ScaleRatioA: 0.9

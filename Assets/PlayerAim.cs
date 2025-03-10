@@ -16,7 +16,7 @@ public class PlayerAim : MonoBehaviour
 
     private GunSway gunSway;
 
-    private bool isAiming = false;
+    public bool isAiming = false;
     private bool isChangingAim = false;
 
 
