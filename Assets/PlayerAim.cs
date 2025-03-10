@@ -16,8 +16,9 @@ public class PlayerAim : MonoBehaviour
 
     private GunSway gunSway;
 
-    private bool isAiming = false;
-    private bool isChangingAim = false;
+    private Coroutine aimCoroutine;
+
+    public bool isAiming = false;
 
 
     private void Awake()
@@ -42,16 +43,28 @@ public class PlayerAim : MonoBehaviour
     private void Aim()
     {
 
-        if (isAiming) StartCoroutine(StopAim());
-        else StartCoroutine(StartAim());
+        if (aimCoroutine != null) StopCoroutine(aimCoroutine);
+
+        if (isAiming)
+        {
+            isAiming = false;
+            aimCoroutine = StartCoroutine(StopAim());
+        }
+        else
+        {
+            isAiming = true;
+            aimCoroutine = StartCoroutine(StartAim());
+        }
 
     }
 
-    private IEnumerator StartAim()
+    public IEnumerator StartAim()
     {
+
         marker.SetActive(false);
+        StartCoroutine(CameraEffects.Instance.ChangeFOV(40, 0.2f));
         gunSway.enabled = false;
-        Vector3 targetPosition = new Vector3(0, -0.1f, 0.7f);
+        Vector3 targetPosition = new Vector3(0, -0.15f, 0.15f);
 
         // Instantly set rotation
         itemHolder.transform.localRotation = Quaternion.Euler(0, 90, 0);
@@ -62,16 +75,18 @@ public class PlayerAim : MonoBehaviour
             yield return null;
         }
 
-        isAiming = true;
         itemHolder.transform.localPosition = targetPosition; // Ensure final position is exactly set
+
+        aimCoroutine = null;
     }
 
-    private IEnumerator StopAim()
+    public IEnumerator StopAim()
     {
         marker.SetActive(true);
         Vector3 targetPosition = new Vector3(0.25f, -0.2f, 0.4f);
+        StartCoroutine(CameraEffects.Instance.ChangeFOV(70, 0.1f));
 
-        
+
         while (Vector3.Distance(itemHolder.transform.localPosition, targetPosition) > 0.01f)
         {
             itemHolder.transform.localPosition = Vector3.Lerp(itemHolder.transform.localPosition, targetPosition, 0.1f);
@@ -81,8 +96,20 @@ public class PlayerAim : MonoBehaviour
         isAiming = false;
         itemHolder.transform.localPosition = targetPosition; // Ensure final position is exactly set
         gunSway.enabled = true;
+
+        aimCoroutine = null;
     }
     
+    public void ResetAim()
+    {
+
+        if (aimCoroutine != null) StopCoroutine(aimCoroutine);
+
+        isAiming = false;
+        marker.SetActive(true);
+        itemHolder.transform.localPosition = new Vector3(0.25f, -0.2f, 0.4f);
+        gunSway.enabled = true;
+    }
 
 
 }

@@ -30,8 +30,9 @@ public class BaseBullet : MonoBehaviour
         RaycastHit hit;
 
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit) && !GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAim>().isAiming)
         {
+
             // The direction of the bullet is the hit point minus the bullet's position
             Vector3 direction = (hit.point - transform.position).normalized;
 

@@ -159,7 +159,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickUpRange: 4
-  dropForwardForce: 5
+  dropForwardForce: 10
   dropUpwardForce: 3
   PlayerControls: {fileID: -944628639613478452, guid: 4a1a05656139ec942b117e261a77dfc6, type: 3}
   playerCanPick: 0
@@ -211,6 +211,7 @@ MonoBehaviour:
   recoilStrength: 5
   recoilRecoverySpeed: 1
   muzzleFlash: {fileID: 5946017559500064212}
+  shotLight: {fileID: 5946017559506176240}
   PlayerControls: {fileID: -944628639613478452, guid: 4a1a05656139ec942b117e261a77dfc6, type: 3}
 --- !u!65 &3065351657393547977
 BoxCollider:
@@ -592,6 +593,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 430074672213510753}
     m_Modifications:
+    - target: {fileID: 1227981510507714296, guid: 0ccf50ef0e5c8f444977782356e1a6dd, type: 3}
+      propertyPath: UVModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2446642555826106942, guid: 0ccf50ef0e5c8f444977782356e1a6dd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -660,7 +665,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: e5727721799e00f44906e7af53883073, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: e5727721799e00f44906e7af53883073, type: 3}
       propertyPath: m_LocalScale.x
@@ -718,6 +723,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 10800000, guid: e5727721799e00f44906e7af53883073, type: 3}
+      propertyPath: m_Intensity
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -731,5 +740,10 @@ Transform:
 --- !u!1 &5946017559500064212 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100004, guid: e5727721799e00f44906e7af53883073, type: 3}
+  m_PrefabInstance: {fileID: 5946017559500096368}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &5946017559506176240 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 10800000, guid: e5727721799e00f44906e7af53883073, type: 3}
   m_PrefabInstance: {fileID: 5946017559500096368}
   m_PrefabAsset: {fileID: 0}

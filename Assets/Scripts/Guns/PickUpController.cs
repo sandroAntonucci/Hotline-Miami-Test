@@ -172,6 +172,8 @@ public class PickUpController : MonoBehaviour
 
         // Disable script
         gunScript.enabled = false;
+
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAim>().ResetAim();
     }
 
 }

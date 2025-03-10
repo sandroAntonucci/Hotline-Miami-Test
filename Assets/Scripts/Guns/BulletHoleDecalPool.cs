@@ -49,7 +49,7 @@ public class BulletHoleDecalPool : MonoBehaviour
 
         float startScale = bulletHole.transform.localScale.x;
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
 
         while (bulletHole.transform.localScale.x > 0)
         {
