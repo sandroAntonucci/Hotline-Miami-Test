@@ -10,13 +10,23 @@ public class PlayerAim : MonoBehaviour
 
     [SerializeField] private GameObject itemHolder;
 
+    [SerializeField] private GameObject marker;
+
     private InputAction aimAction;
+
+    private GunSway gunSway;
+
+    private bool isAiming = false;
+    private bool isChangingAim = false;
+
 
     private void Awake()
     {
         aimAction = PlayerControls.FindActionMap("Player").FindAction("Aim");
 
-        aimAction.performed += ctx => StartCoroutine(Aim());
+        aimAction.performed += ctx => Aim();
+
+        gunSway = itemHolder.GetComponent<GunSway>();
     }
 
     private void OnEnable()
@@ -29,18 +39,50 @@ public class PlayerAim : MonoBehaviour
         aimAction.Disable();
     }
 
-    private IEnumerator Aim()
+    private void Aim()
     {
 
-        // Lerp gun position to the center of the camera
-        while (Vector3.Distance(itemHolder.transform.position, new Vector3(0f, -0.1f, 0.5f)) > 0.01f)
+        if (isAiming) StartCoroutine(StopAim());
+        else StartCoroutine(StartAim());
+
+    }
+
+    private IEnumerator StartAim()
+    {
+        marker.SetActive(false);
+        gunSway.enabled = false;
+        Vector3 targetPosition = new Vector3(0, -0.1f, 0.7f);
+
+        // Instantly set rotation
+        itemHolder.transform.localRotation = Quaternion.Euler(0, 90, 0);
+
+        while (Vector3.Distance(itemHolder.transform.localPosition, targetPosition) > 0.01f)
         {
-            itemHolder.transform.position = Vector3.Lerp(itemHolder.transform.position, new Vector3(0f, -0.1f, 0.5f), Time.deltaTime * 10);
+            itemHolder.transform.localPosition = Vector3.Lerp(itemHolder.transform.localPosition, targetPosition, 0.1f);
             yield return null;
         }
 
-
-
+        isAiming = true;
+        itemHolder.transform.localPosition = targetPosition; // Ensure final position is exactly set
     }
+
+    private IEnumerator StopAim()
+    {
+        marker.SetActive(true);
+        Vector3 targetPosition = new Vector3(0.25f, -0.2f, 0.4f);
+
+        
+        while (Vector3.Distance(itemHolder.transform.localPosition, targetPosition) > 0.01f)
+        {
+            itemHolder.transform.localPosition = Vector3.Lerp(itemHolder.transform.localPosition, targetPosition, 0.1f);
+            yield return null;
+        }
+
+        isAiming = false;
+        itemHolder.transform.localPosition = targetPosition; // Ensure final position is exactly set
+        gunSway.enabled = true;
+    }
+    
+
 
 }

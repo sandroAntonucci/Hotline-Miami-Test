@@ -251,6 +251,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   volume: {fileID: 0}
   hueSpeed: 50
+--- !u!1 &420088472 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4910233949613740990, guid: c0d7f3f28c9d0db4984bcd4ad45caf56, type: 3}
+  m_PrefabInstance: {fileID: 1476632890429291237}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &454678472
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,6 +475,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerControls: {fileID: -944628639613478452, guid: 4a1a05656139ec942b117e261a77dfc6, type: 3}
   itemHolder: {fileID: 2101095367}
+  marker: {fileID: 420088472}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1001,7 +1007,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5738456080911321149, guid: a35b8c32acba1334b9b31dfe8cdbc9be, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 20.78
+      value: 4.84
       objectReference: {fileID: 0}
     - target: {fileID: 5738456080911321149, guid: a35b8c32acba1334b9b31dfe8cdbc9be, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1234,7 +1240,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 573569895623378805, guid: c0d7f3f28c9d0db4984bcd4ad45caf56, type: 3}
       propertyPath: m_text
-      value: '[E] TO PICK UP'
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 573569895623378805, guid: c0d7f3f28c9d0db4984bcd4ad45caf56, type: 3}
       propertyPath: m_fontColor.a
@@ -1254,7 +1260,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 994793460289850579, guid: c0d7f3f28c9d0db4984bcd4ad45caf56, type: 3}
       propertyPath: m_text
-      value: '[E] TO PICK UP'
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 1175258026905981251, guid: c0d7f3f28c9d0db4984bcd4ad45caf56, type: 3}
       propertyPath: m_Enabled

@@ -41,17 +41,6 @@ public class GunSway : MonoBehaviour
         lookAction.canceled += ctx => lookInput = Vector2.zero;
     }
 
-    private void OnEnable()
-    {
-        lookAction.Enable();
-        moveAction.Enable();
-    }
-
-    private void OnDisable()
-    {
-        lookAction.Disable();
-        moveAction.Disable();
-    }
 
     private void Start()
     {
