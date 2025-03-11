@@ -384,7 +384,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &546093734
 MonoBehaviour:
@@ -398,10 +398,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37aac5eb4309d22428dcb454b604b177, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
   fieldOfView: 60
   distanceOfView: 10
-  enemyType: 1
+  enemyType: 0
   rangedEnemyDistance: 5
   meleeEnemyDistance: 2
 --- !u!1 &614120405
@@ -416,6 +415,7 @@ GameObject:
   - component: {fileID: 614120408}
   - component: {fileID: 614120407}
   - component: {fileID: 614120406}
+  - component: {fileID: 614120410}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Untagged
@@ -509,6 +509,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!208 &614120410
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614120405}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &629241764
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,6 +537,7 @@ GameObject:
   - component: {fileID: 629241767}
   - component: {fileID: 629241766}
   - component: {fileID: 629241765}
+  - component: {fileID: 629241769}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Untagged
@@ -614,6 +631,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!208 &629241769
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 629241764}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &636984197
 GameObject:
   m_ObjectHideFlags: 0
@@ -1127,6 +1160,7 @@ GameObject:
   - component: {fileID: 1635964829}
   - component: {fileID: 1635964828}
   - component: {fileID: 1635964827}
+  - component: {fileID: 1635964831}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Untagged
@@ -1220,6 +1254,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!208 &1635964831
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635964826}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &1860168400
 GameObject:
   m_ObjectHideFlags: 0
@@ -1413,7 +1463,7 @@ Transform:
   m_GameObject: {fileID: 1983225255}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: -7.67}
+  m_LocalPosition: {x: 0, y: 1.58, z: -7.67}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:

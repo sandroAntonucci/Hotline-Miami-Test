@@ -1,14 +1,13 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using UnityEngine;
 
-public class AIHandler : MonoBehaviour, IDamageable
+public class AIHandler : MonoBehaviour
 {
-    public int health = 100;
+
     public float fieldOfView = 30.0f;
-    public float distanceOfView = 5;
+    public float distanceOfView = 10;
     public EnemyType enemyType;
     public float rangedEnemyDistance = 5;
     public float meleeEnemyDistance = 2;
@@ -31,15 +30,6 @@ public class AIHandler : MonoBehaviour, IDamageable
     void Update()
     {
         currentAiState.UpdateState(this);
-    }
-
-    public void DealDamage(int amount)
-    {
-        health -= amount;
-        if (health <= 0)
-        {
-            ChangeState(deadState);
-        }
     }
 
     public void ChangeState(AIBaseState newState)
@@ -79,12 +69,15 @@ public class AIHandler : MonoBehaviour, IDamageable
             float distanceToPlayer = Vector3.Distance(transform.position, playerObject.transform.position);
             if (distanceToPlayer < distanceOfView)
             {
+                // Debug collision check.
+                Debug.DrawRay(transform.position, playerObject.transform.position, Color.red);
+
                 RaycastHit hit;
                 if (Physics.Raycast(transform.position, directionTowardsPlayer, out hit, distanceOfView))
                 {
-                    Debug.DrawRay(transform.position, playerObject.transform.position, Color.red);
                     if (hit.collider.CompareTag("Player"))
                     {
+                        RotateTowardsPlayer(directionTowardsPlayer);
                         return true;
                     }
                 }
