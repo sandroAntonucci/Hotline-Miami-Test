@@ -8,8 +8,8 @@ public class PlayerRotate : MonoBehaviour
 
     [Header("Camera Settings")]
     [SerializeField] private Transform _cameraHolder;
-    [SerializeField] private float _speed;
     [SerializeField] private float _rotationLimit;
+    public float _speed;
 
     [SerializeField] private InputActionAsset _playerControls;
 

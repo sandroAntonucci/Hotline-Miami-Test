@@ -35,7 +35,7 @@ public class ProceduralRecoil : MonoBehaviour
         currentRotation = Vector3.Lerp(currentRotation, targetRotation, Time.deltaTime * snapiness);
 
         // Apply recoil on top of PlayerRotate's existing rotation
-        cameraHolder.localRotation *= Quaternion.Euler(currentRotation);
+        cameraHolder.localRotation = Quaternion.Euler(currentRotation) * cameraHolder.localRotation;
 
     }
 

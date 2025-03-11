@@ -43,6 +43,8 @@ public class PlayerAim : MonoBehaviour
     private void Aim()
     {
 
+        if (!PickUpController.slotFull || PickUpController.weaponEquipped.gameObject.GetComponent<BaseWeapon>().isMelee) return;
+
         if (aimCoroutine != null) StopCoroutine(aimCoroutine);
 
         if (isAiming)
@@ -64,7 +66,10 @@ public class PlayerAim : MonoBehaviour
         marker.SetActive(false);
         StartCoroutine(CameraEffects.Instance.ChangeFOV(40, 0.2f));
         gunSway.enabled = false;
-        Vector3 targetPosition = new Vector3(0, -0.15f, 0.15f);
+        Vector3 targetPosition = PickUpController.weaponEquipped.gameObject.GetComponent<BaseGun>().aimPosition;
+
+        PickUpController.weaponEquipped.gameObject.GetComponent<BaseGun>().recoilStrengthMultiplier /= 2;
+        gameObject.GetComponent<PlayerRotate>()._speed /= 2;
 
         // Instantly set rotation
         itemHolder.transform.localRotation = Quaternion.Euler(0, 90, 0);
@@ -85,6 +90,10 @@ public class PlayerAim : MonoBehaviour
         marker.SetActive(true);
         Vector3 targetPosition = new Vector3(0.25f, -0.2f, 0.4f);
         StartCoroutine(CameraEffects.Instance.ChangeFOV(70, 0.1f));
+        gameObject.GetComponent<PlayerRotate>()._speed *= 2;
+
+
+        PickUpController.weaponEquipped.gameObject.GetComponent<BaseGun>().recoilStrengthMultiplier *= 2;
 
 
         while (Vector3.Distance(itemHolder.transform.localPosition, targetPosition) > 0.01f)
@@ -105,7 +114,11 @@ public class PlayerAim : MonoBehaviour
 
         if (aimCoroutine != null) StopCoroutine(aimCoroutine);
 
+        gameObject.GetComponent<PlayerRotate>()._speed *= 2;
+        PickUpController.weaponEquipped.gameObject.GetComponent<BaseGun>().recoilStrengthMultiplier *= 2;
+
         isAiming = false;
+        StartCoroutine(CameraEffects.Instance.ChangeFOV(70, 0.1f));
         marker.SetActive(true);
         itemHolder.transform.localPosition = new Vector3(0.25f, -0.2f, 0.4f);
         gunSway.enabled = true;

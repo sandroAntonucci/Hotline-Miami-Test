@@ -9,13 +9,13 @@ using TMPro;
 public class PickUpController : MonoBehaviour
 {
     [Header("PICK UP VARIABLES")]
-    [SerializeField] private float pickUpRange;
+    public float pickUpRange;
     [SerializeField] private float dropForwardForce;
     [SerializeField] private float dropUpwardForce;
 
     [SerializeField] private InputActionAsset PlayerControls;
 
-    private BaseGun gunScript;
+    private BaseWeapon weaponScript;
     private Rigidbody rb;
     private BoxCollider coll;
     private Transform player, gunContainer, fpsCam;
@@ -23,8 +23,9 @@ public class PickUpController : MonoBehaviour
     private InputAction pickAction;
     private InputAction dropAction;
 
-    private bool equipped;
-    private static bool slotFull;
+    public bool equipped;
+    public static bool slotFull;
+    public static PickUpController weaponEquipped;
     public bool playerCanPick;
 
     private Ray cameraRay;
@@ -60,7 +61,7 @@ public class PickUpController : MonoBehaviour
     {
 
         // Assign components
-        gunScript = GetComponent<BaseGun>();
+        weaponScript = GetComponent<BaseWeapon>();
         fpsCam = GameObject.Find("Main Camera").transform;
         rb = GetComponent<Rigidbody>();
         coll = GetComponent<BoxCollider>();
@@ -69,46 +70,27 @@ public class PickUpController : MonoBehaviour
 
         if (!equipped)
         {
-            gunScript.enabled = false;
+            weaponScript.enabled = false;
             rb.isKinematic = false;
             coll.isTrigger = false;
         }
         if (equipped)
         {
-            gunScript.enabled = true;
+            weaponScript.enabled = true;
             rb.isKinematic = true;
             coll.isTrigger = true;
             slotFull = true;
         }
     }
 
-    private void Update()
-    {
-        // Check if player is in range and looking at the gun
-        Vector3 direction = player.position - transform.position;
-        cameraRay = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-        float angle = Vector3.Angle(direction, -cameraRay.direction );
-
-        if (Vector3.Distance(transform.position, player.position) < pickUpRange && angle < 10f && !slotFull && !equipped)
-        {
-            foreach(var gO in GameObject.FindGameObjectsWithTag("InteractionText"))
-            {
-                gO.GetComponent<TextMeshProUGUI>().text = "[E] TO PICK UP";
-            }
-            playerCanPick = true;
-        }
-        else
-        {
-            foreach (var gO in GameObject.FindGameObjectsWithTag("InteractionText"))
-            {
-                gO.GetComponent<TextMeshProUGUI>().text = "";
-            }
-            playerCanPick = false;
-        }
-    }
-
     private void PickUp()
     {
+
+        if (weaponEquipped != null)
+        {
+            weaponEquipped.Drop();
+        }
+
         equipped = true;
         slotFull = true;
 
@@ -121,7 +103,9 @@ public class PickUpController : MonoBehaviour
         StartCoroutine(MoveToGunContainer());
 
         // Enable script
-        gunScript.enabled = true;
+        weaponScript.enabled = true;
+
+        weaponEquipped = this;
     }
 
     private IEnumerator MoveToGunContainer()
@@ -171,9 +155,15 @@ public class PickUpController : MonoBehaviour
         rb.AddTorque(new Vector3(random, random, random));
 
         // Disable script
-        gunScript.enabled = false;
+        weaponScript.enabled = false;
 
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAim>().ResetAim();
+
+        if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAim>().isAiming)
+        {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAim>().ResetAim();
+        }
+
+        weaponEquipped = null;
     }
 
 }

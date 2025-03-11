@@ -26,7 +26,9 @@ public class BaseBullet : MonoBehaviour
         rb.useGravity = false;
 
         // Draws raycast from the camera to know where the bullet is going
-        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+        Transform cameraHolder = GameObject.FindGameObjectWithTag("MainCamera").transform;
+
+        Ray ray = new Ray(cameraHolder.position + cameraHolder.forward * 0.1f, cameraHolder.forward);
         RaycastHit hit;
 
 

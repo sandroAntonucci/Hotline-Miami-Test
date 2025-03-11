@@ -194,7 +194,15 @@ public class PlayerMovement : MonoBehaviour
 
             // Start a coroutine to smoothly transition back to the original height
             StartCoroutine(LerpCameraHeight(slideHeight, originalHeight, 0.2f, false)); // Adjust the duration (0.2f) as needed
-            StartCoroutine(CameraEffects.Instance.ChangeFOV(70f, 0.2f));
+            
+            if (gameObject.GetComponent<PlayerAim>().isAiming)
+            {
+                StartCoroutine(CameraEffects.Instance.ChangeFOV(40f, 0.2f));
+            }
+            else
+            {
+                StartCoroutine(CameraEffects.Instance.ChangeFOV(70f, 0.2f));
+            }
         }
     }
 

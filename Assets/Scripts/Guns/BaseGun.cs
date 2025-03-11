@@ -3,9 +3,11 @@ using UnityEngine.InputSystem;
 using System.Collections;
 using UnityEngine.Experimental.GlobalIllumination;
 
-public abstract class BaseGun : MonoBehaviour
+public abstract class BaseGun : BaseWeapon
 {
     public string gunName;
+
+    public Vector3 aimPosition;
 
     public float fireRate;
     public int maxAmmo;
@@ -29,6 +31,7 @@ public abstract class BaseGun : MonoBehaviour
 
     private bool canShoot = true;
     private bool isShooting = false;
+    public float recoilStrengthMultiplier = 30;
 
     private Coroutine ShootCooldownCoroutine;
 
@@ -132,7 +135,7 @@ public abstract class BaseGun : MonoBehaviour
 
     private void ApplyRecoil()
     {
-        recoilStrength = fireRate * 30;
+        recoilStrength = fireRate * recoilStrengthMultiplier; 
         recoilRecoverySpeed = 2 / fireRate;
         CameraEffects.Instance.recoil.recoil(-recoilStrength);
         float rand = Random.Range(-recoilStrength / 3f, recoilStrength / 3f);
