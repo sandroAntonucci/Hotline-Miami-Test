@@ -15,6 +15,8 @@ public class PickUpController : MonoBehaviour
 
     [SerializeField] private InputActionAsset PlayerControls;
 
+    [SerializeField] private float throwForce = 600f;
+
     private BaseWeapon weaponScript;
     private Rigidbody rb;
     private BoxCollider coll;
@@ -138,6 +140,7 @@ public class PickUpController : MonoBehaviour
 
         transform.SetParent(null);
 
+        
         // Make Rigidbody not kinematic and BoxCollider normal
         rb.isKinematic = false;
         rb.interpolation = RigidbodyInterpolation.Extrapolate;
@@ -147,12 +150,24 @@ public class PickUpController : MonoBehaviour
         rb.velocity = player.GetComponent<CharacterController>().velocity;
 
         // Add force to the throw
-        rb.AddForce(fpsCam.forward * dropForwardForce, ForceMode.Impulse);
-        rb.AddForce(fpsCam.up * dropUpwardForce, ForceMode.Impulse);
+        
 
-        // Add random rotation
-        float random = Random.Range(-1f, 1f);
-        rb.AddTorque(new Vector3(random, random, random));
+        if (GetComponent<BaseWeapon>().isMelee)
+        {
+            rb.AddForce(rb.transform.right * -1 * dropForwardForce, ForceMode.Impulse);
+            rb.AddForce(rb.transform.up * dropUpwardForce / 2, ForceMode.Impulse);
+            rb.AddTorque(rb.transform.forward, ForceMode.Impulse);
+        }
+        else
+        {
+            rb.AddForce(rb.transform.right * -1 * dropForwardForce, ForceMode.Impulse);
+            rb.AddForce(rb.transform.up * dropUpwardForce, ForceMode.Impulse);
+            // Add random rotation
+            float random = Random.Range(-1f, 1f);
+            rb.AddTorque(new Vector3(random, random, random));
+        }
+
+
 
         // Disable script
         weaponScript.enabled = false;

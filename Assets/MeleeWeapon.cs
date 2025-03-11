@@ -7,7 +7,8 @@ public class MeleeWeapon : BaseWeapon
 {
 
     [SerializeField] private InputActionAsset PlayerControls;
-    private InputAction attackAction
+    private InputAction attackAction;
+
 
 
 }
