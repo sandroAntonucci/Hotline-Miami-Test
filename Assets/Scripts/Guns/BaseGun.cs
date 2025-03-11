@@ -14,7 +14,7 @@ public abstract class BaseGun : BaseWeapon
     public int currentAmmo;
 
     public GameObject bulletPrefab;  // Bullet prefab is still needed for pool creation
-    public Transform shootPosition;
+    public Transform shootPosition; 
 
     public float recoilStrength = 5f; // Adjust this value to control how strong the recoil is
     public float recoilRecoverySpeed = 1.0f;
