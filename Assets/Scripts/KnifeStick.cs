@@ -14,9 +14,12 @@ public class KnifeStick : MonoBehaviour
 
             // Gets stuck
             rb.useGravity = false;
+
+            // Stops the knife from moving
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+
             rb.isKinematic = true;
-
-
 
         }
     }

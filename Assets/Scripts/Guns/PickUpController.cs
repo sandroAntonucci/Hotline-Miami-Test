@@ -144,6 +144,7 @@ public class PickUpController : MonoBehaviour
         // Make Rigidbody not kinematic and BoxCollider normal
         rb.isKinematic = false;
         rb.interpolation = RigidbodyInterpolation.Extrapolate;
+        rb.useGravity = true;
         coll.isTrigger = false;
 
         // Carry player's momentum
