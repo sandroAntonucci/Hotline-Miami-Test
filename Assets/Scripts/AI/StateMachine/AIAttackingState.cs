@@ -11,7 +11,8 @@ public class AIAttackingState : AIBaseState
 
     public override void UpdateState(AIHandler handler)
     {
-        handler.ChangeState(handler.awareState);
+        Debug.Log("Attacking! :D");
+        handler.ChangeState(handler.chasingState);
     }
 
     public override void ExitState(AIHandler handler)
