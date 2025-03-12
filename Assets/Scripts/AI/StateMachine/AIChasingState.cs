@@ -20,12 +20,23 @@ public class AIChasingState : AIBaseState
     {
         bool isInRange = handler.IsInAttackRange();
         bool isInVision = handler.IsPlayerInVision();
-        if (!isInRange && !isInVision)
-            agent.destination = handler.GetPlayerObject().transform.position;
-        else if (isInRange && !isInVision)
-            agent.destination = handler.GetPlayerObject().transform.position;
-        else
+        GameObject playerObject = handler.GetPlayerObject();
+
+        if (!isInRange)
+        {
+            agent.destination = playerObject.transform.position;
+        }
+
+        Vector3 directionTowardsPlayer = (playerObject.transform.position - handler.transform.position).normalized;
+        handler.RotateTowardsPlayer(directionTowardsPlayer);
+
+        if (isInRange && !isInVision)
+            agent.stoppingDistance--;
+
+        if (isInRange && isInVision)
+        {
             handler.ChangeState(handler.attackingState);
+        }  
     }
 
     public override void ExitState(AIHandler handler)
