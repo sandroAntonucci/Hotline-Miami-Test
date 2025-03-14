@@ -21,6 +21,9 @@ public class AIHandler : MonoBehaviour, IDamageable
     public AIStunnedState stunnedState = new AIStunnedState();
     public AIDeadState deadState = new AIDeadState();
 
+    public NodeRegion currentNodeRegion;
+    public Node currentNode;
+
 
     void Start()
     {
