@@ -45,6 +45,11 @@ public class AIHandler : MonoBehaviour, IDamageable
         }
     }
 
+    public void DestroyObject(GameObject obj)
+    {
+        Destroy(obj);
+    }
+
     public void ChangeState(AIBaseState newState)
     {
         currentAiState.ExitState(this);

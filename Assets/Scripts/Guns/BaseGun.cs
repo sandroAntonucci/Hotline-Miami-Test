@@ -12,6 +12,7 @@ public abstract class BaseGun : BaseWeapon
     public float fireRate;
     public int maxAmmo;
     public int currentAmmo;
+    public int weaponBulletDamage = 100;
 
     public GameObject bulletPrefab;  // Bullet prefab is still needed for pool creation
     public Transform shootPosition; 
@@ -85,6 +86,7 @@ public abstract class BaseGun : BaseWeapon
 
         // Get a bullet from the pool
         GameObject bullet = BulletPool.Instance.GetBullet(shootPosition.position, shootPosition.rotation);
+        bullet.GetComponent<BaseBullet>().bulletDamage = weaponBulletDamage;
 
         ApplyRecoil();
     }

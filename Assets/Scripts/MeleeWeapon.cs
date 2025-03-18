@@ -20,7 +20,7 @@ public class MeleeWeapon : BaseWeapon
             Attack();
         };
 
-        attackAnimation = GetComponent<Animator>();
+        //attackAnimation = GetComponent<Animator>();
 
 
     }
@@ -37,7 +37,7 @@ public class MeleeWeapon : BaseWeapon
 
     private void Attack()
     {
-        attackAnimation.enabled = true;
+        //attackAnimation.enabled = true;
     }
 
 

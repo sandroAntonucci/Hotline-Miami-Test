@@ -7,6 +7,7 @@ public class BaseBullet : MonoBehaviour
     // The bullet's movement speed
     public float speed = 5f;
     public float lifeDuration = 2f;
+    public int bulletDamage;
 
     public BulletPool bulletPool;
 
@@ -49,10 +50,14 @@ public class BaseBullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-
-        if(collision.gameObject.CompareTag("Enemy"))
+        
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            Destroy(collision.gameObject);
+            AIHandler aiHandlerComponent = collision.gameObject.GetComponent<AIHandler>();
+            if (aiHandlerComponent != null)
+            {
+                aiHandlerComponent.DealDamage(bulletDamage);
+            }
         }
 
         if (!collision.gameObject.CompareTag("Player"))
