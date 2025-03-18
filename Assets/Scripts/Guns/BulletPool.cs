@@ -38,13 +38,13 @@ public class BulletPool : MonoBehaviour
             GameObject bullet = bulletPool.Dequeue();
             bullet.transform.position = position;
             bullet.transform.rotation = rotation;
-            bullet.SetActive(true);
             return bullet;
         }
         else
         {
             // If no bullets are available, create a new one
             GameObject newBullet = Instantiate(bulletPrefab, position, rotation);
+            newBullet.SetActive(false);
             return newBullet;
         }
     }

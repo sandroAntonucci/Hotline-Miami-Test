@@ -516,6 +516,8 @@ MonoBehaviour:
   dropForwardForce: 10
   dropUpwardForce: 3
   PlayerControls: {fileID: -944628639613478452, guid: 4a1a05656139ec942b117e261a77dfc6, type: 3}
+  throwForce: 600
+  equipped: 0
   playerCanPick: 0
 --- !u!54 &2255457835861362307
 Rigidbody:
@@ -556,10 +558,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a41ade2cd5e947459da8906344556f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMelee: 0
   gunName: Pistol
+  aimPosition: {x: 0, y: 0, z: 0}
   fireRate: 0.1
   maxAmmo: 500
-  currentAmmo: 12
+  currentAmmo: 30
+  weaponBulletDamage: 100
   bulletPrefab: {fileID: 3575611928538805115, guid: 745a87995944ab94caa447ec2061dbc4, type: 3}
   shootPosition: {fileID: 5894464232039472219}
   recoilStrength: 5
@@ -567,6 +572,8 @@ MonoBehaviour:
   muzzleFlash: {fileID: 911521981499089672}
   shotLight: {fileID: 911521981505203756}
   PlayerControls: {fileID: -944628639613478452, guid: 4a1a05656139ec942b117e261a77dfc6, type: 3}
+  canShoot: 1
+  recoilStrengthMultiplier: 30
 --- !u!65 &5185308276053572420
 BoxCollider:
   m_ObjectHideFlags: 0

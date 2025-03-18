@@ -6,6 +6,8 @@ public class AIDeadState : AIBaseState
 {
     public override void EnterState(AIHandler handler)
     {
+        // gotta remove that nasty AI from the region agents :>
+        handler.currentNodeRegion.agentsInRegion.Remove(handler);
         handler.DestroyObject(handler.gameObject);
     }
 
