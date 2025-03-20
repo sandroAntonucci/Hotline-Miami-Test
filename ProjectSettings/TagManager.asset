@@ -10,6 +10,7 @@ TagManager:
   - Enemy
   - CameraHolder
   - NodeRegion
+  - Board
   layers:
   - Default
   - TransparentFX
