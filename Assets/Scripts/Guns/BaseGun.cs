@@ -30,7 +30,7 @@ public abstract class BaseGun : BaseWeapon
     public InputActionAsset PlayerControls;
     private InputAction shootAction;
 
-    private bool canShoot = true;
+    public bool canShoot = true;
     private bool isShooting = false;
     public float recoilStrengthMultiplier = 30;
 
@@ -67,7 +67,7 @@ public abstract class BaseGun : BaseWeapon
 
         if (startingRotation != null)
         {
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, startingRotation, Time.deltaTime * recoilRecoverySpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, startingRotation, Time.deltaTime * recoilRecoverySpeed);
         }  
     }
 
@@ -86,7 +86,17 @@ public abstract class BaseGun : BaseWeapon
 
         // Get a bullet from the pool
         GameObject bullet = BulletPool.Instance.GetBullet(shootPosition.position, shootPosition.rotation);
-        bullet.GetComponent<BaseBullet>().bulletDamage = weaponBulletDamage;
+        BaseBullet bulletComp = bullet.GetComponent<BaseBullet>();
+        bulletComp.bulletDamage = weaponBulletDamage;
+        if (transform.parent.tag == "Enemy")
+        {
+            bulletComp.isFromAI = true;
+            bulletComp.aiCam = transform.parent.GetChild(0).gameObject;
+        }
+        else
+            bulletComp.isFromAI = false;
+
+        bullet.SetActive(true);
 
         ApplyRecoil();
     }
