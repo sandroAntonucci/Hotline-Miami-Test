@@ -20,7 +20,6 @@ public abstract class BaseGun : BaseWeapon
     public float recoilStrength = 5f; // Adjust this value to control how strong the recoil is
     public float recoilRecoverySpeed = 1.0f;
     private Quaternion startingRotation = Quaternion.Euler(0f,0f,0f);
-    private Quaternion targetRotation;
 
 
     [SerializeField] private GameObject muzzleFlash;
@@ -58,7 +57,7 @@ public abstract class BaseGun : BaseWeapon
         currentAmmo = maxAmmo;
     }
 
-    public virtual void Update()
+    public void Update()
     {
         if (isShooting && canShoot && currentAmmo > 0)
         {
@@ -67,7 +66,7 @@ public abstract class BaseGun : BaseWeapon
 
         if (startingRotation != null)
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, startingRotation, Time.deltaTime * recoilRecoverySpeed);
+            transform.localRotation = Quaternion.Slerp(transform.localRotation, startingRotation, Time.deltaTime * recoilRecoverySpeed);
         }  
     }
 
@@ -88,13 +87,6 @@ public abstract class BaseGun : BaseWeapon
         GameObject bullet = BulletPool.Instance.GetBullet(shootPosition.position, shootPosition.rotation);
         BaseBullet bulletComp = bullet.GetComponent<BaseBullet>();
         bulletComp.bulletDamage = weaponBulletDamage;
-        if (transform.parent.tag == "Enemy")
-        {
-            bulletComp.isFromAI = true;
-            bulletComp.aiCam = transform.parent.GetChild(0).gameObject;
-        }
-        else
-            bulletComp.isFromAI = false;
 
         bullet.SetActive(true);
 

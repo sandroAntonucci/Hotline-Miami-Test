@@ -8,8 +8,6 @@ public class BaseBullet : MonoBehaviour
     public float speed = 5f;
     public float lifeDuration = 2f;
     public int bulletDamage;
-    public bool isFromAI = false;
-    public GameObject aiCam;
 
     public BulletPool bulletPool;
 
@@ -29,30 +27,13 @@ public class BaseBullet : MonoBehaviour
         rb.useGravity = false;
 
         // Draws raycast from the camera to know where the bullet is going
-        Transform cameraHolder;
-        if (isFromAI)
-            cameraHolder = aiCam.transform;
-        else
-            cameraHolder = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        Transform cameraHolder = GameObject.FindGameObjectWithTag("MainCamera").transform;
 
-        Debug.Log(cameraHolder);
 
         Ray ray = new Ray(cameraHolder.position + cameraHolder.forward * 0.1f, cameraHolder.forward);
         RaycastHit hit;
 
-        if (isFromAI)
-        {
-            if (Physics.Raycast(ray, out hit))
-            {
-                Vector3 direction = (hit.point - transform.position).normalized;
-                rb.velocity = direction * speed;
-            }
-            else
-            {
-                rb.velocity = transform.right * -1 * speed;
-            }
-        }
-        else if (Physics.Raycast(ray, out hit) && !GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAim>().isAiming)
+        if (Physics.Raycast(ray, out hit) && !GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAim>().isAiming)
         {
             Vector3 direction = (hit.point - transform.position).normalized;
             rb.velocity = direction * speed;

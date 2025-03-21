@@ -29,9 +29,6 @@ public class AIHandler : MonoBehaviour, IDamageable
     {
         currentAiState = idleState;
         currentAiState.EnterState(this);
-
-        // Make gun kinematic.
-        transform.GetChild(1).GetComponent<Rigidbody>().isKinematic = true;
     }
 
     void Update()
