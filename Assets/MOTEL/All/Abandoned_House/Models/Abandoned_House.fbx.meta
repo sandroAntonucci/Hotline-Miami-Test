@@ -3,7 +3,12 @@ guid: a15f977d0abc59846b691f91d7108d9b
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Arbol1
+    second: {fileID: 2100000, guid: 79b565f3e2d0e8743b95b6c45b67d60e, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
