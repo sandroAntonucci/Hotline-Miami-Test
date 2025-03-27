@@ -9,10 +9,7 @@ public class InteractableBoard : InteractableItem
 
     [SerializeField] private GameObject interactionCamera;
 
-    private Transform cameraPosition;
-    public Transform objectiveCameraPosition;
-
-    private bool isZooming = false;
+    [SerializeField] private CameraZoom cameraZoom;
 
     private GameObject player;
 
@@ -25,79 +22,50 @@ public class InteractableBoard : InteractableItem
     public override void Interaction()
     {
 
-        if (isZooming) return;
+        if (cameraZoom.isZooming) return;
 
         isInteracting = true;
 
         base.Interaction();
 
-        cameraPosition = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        cameraZoom.cameraPosition = GameObject.FindGameObjectWithTag("MainCamera").transform;
 
         player.SetActive(false);
 
         interactionCamera.SetActive(true);
 
-        StartCoroutine(CameraZoomIn());
+        cameraZoom.ZoomIn();
 
         //interactionCamera.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
-    private IEnumerator CameraZoomIn()
+    public override void StopInteraction()
     {
+        if (cameraZoom.isZooming) return;
 
-        isZooming = true;
+        cameraZoom.ZoomOut();
 
-        float elapsedTime = 0;
-        float waitTime = 0.15f;
 
-        while (elapsedTime < waitTime)
+        // Wait for the camera to finish zooming out
+        while (cameraZoom.isZooming)
         {
-            interactionCamera.transform.position = Vector3.Lerp(cameraPosition.position, objectiveCameraPosition.position, (elapsedTime / waitTime));
-            interactionCamera.transform.rotation = Quaternion.Lerp(cameraPosition.rotation, objectiveCameraPosition.rotation, (elapsedTime / waitTime));
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            Debug.Log("Waiting for camera to zoom out");
+            return;
         }
 
-        isZooming = false;
-    }
+        isInteracting = false;
 
-    private IEnumerator CameraZoomOut()
-    {
-        isZooming = true;
-
-        float elapsedTime = 0;
-        float waitTime = 0.15f;
-
-        while (elapsedTime < waitTime)
-        {
-            interactionCamera.transform.position = Vector3.Lerp(objectiveCameraPosition.position, cameraPosition.position, (elapsedTime / waitTime));
-            interactionCamera.transform.rotation = Quaternion.Lerp(objectiveCameraPosition.rotation, cameraPosition.rotation, (elapsedTime / waitTime));
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+        base.StopInteraction();
 
 
+       
         player.SetActive(true);
         interactionCamera.SetActive(false);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        isZooming = false;
-    }
-
-    public override void StopInteraction()
-    {
-        if (isZooming) return;
-
-        isInteracting = false;
-
-        base.StopInteraction();
-        StartCoroutine(CameraZoomOut());
     }
 
 }
