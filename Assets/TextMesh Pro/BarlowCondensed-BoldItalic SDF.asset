@@ -991,10 +991,14 @@ Material:
         m_Scale: {x: 1, y: 1}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         m_Offset: {x: -0.12944686, y: 0}
 =======
         m_Offset: {x: -0.45199847, y: 0}
 >>>>>>> 4f1afb51202f96327dc236d270306e50caaea279
+=======
+        m_Offset: {x: -0.014222026, y: 0}
+>>>>>>> cb60f73dc74bab459ce81dab58321da6430e988f
 =======
         m_Offset: {x: -0.014222026, y: 0}
 >>>>>>> cb60f73dc74bab459ce81dab58321da6430e988f
