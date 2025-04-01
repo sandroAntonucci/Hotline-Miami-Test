@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    public void DealDamage(int amount);
+    public void DealDamage(int amount, string gunName);
 }

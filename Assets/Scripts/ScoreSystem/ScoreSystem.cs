@@ -10,14 +10,15 @@ using UnityEngine.UIElements;
 public class ScoreSystem : MonoBehaviour
 {
     // Vars
-    public int baseMultiplier = 1;
-    public int multiplier;
+    public float baseMultiplier = 1;
+    public float multiplier;
     public float baseMultiplierTime = 3;
     public float multiplierTime;
     public float multiplierDecrease = .1f;
     public uint score; // unsigned int can hold a bigger integer number =)
 
     public List<string> comboList = new List<string>();
+    private uint scoreToAdd;
 
     // Coroutines
     public Coroutine multiplierCoroutine;
@@ -35,13 +36,11 @@ public class ScoreSystem : MonoBehaviour
     private void OnEnable()
     {
         awardPointsEvent += AwardPointsEventCallback;
-        multiplierCoroutine = StartCoroutine(MultiplierCoroutine());
     }
 
     private void OnDisable()
     {
         awardPointsEvent -= AwardPointsEventCallback;
-        StopCoroutine(multiplierCoroutine);
     }
 
     public void TriggerAwardPointsEvent(int amount, string weapon = "")
@@ -51,10 +50,11 @@ public class ScoreSystem : MonoBehaviour
 
     private void AwardPointsEventCallback(int amount, string weapon = "")
     {
-        multiplier = comboList.Count * 2;
+        multiplier = baseMultiplier + (comboList.Count * 0.5f);
         multiplierTime = baseMultiplierTime;
-        score += (uint)(amount * multiplier);
-        Debug.Log($"Awarded {amount} (x{multiplier}) of score, new score {score}");
+        scoreToAdd = (uint)(amount * multiplier);
+        score += scoreToAdd;
+        Debug.Log($"Awarded {scoreToAdd} (x{multiplier}) of score, new score {score}");
         // if the weapon that was used to gather the points is different than the last one, then add it to the list.
         if (weapon != "")
         {
@@ -63,20 +63,25 @@ public class ScoreSystem : MonoBehaviour
             else if (comboList.Count > 0 && comboList[0] != weapon)
                 comboList.Add(weapon);
         }
+
+        if (multiplierCoroutine != null)
+        {
+            StopCoroutine(multiplierCoroutine);
+        }
+        multiplierCoroutine = StartCoroutine(MultiplierCoroutine());
     }
 
     private IEnumerator MultiplierCoroutine()
     {
-        while (true)
+        while (multiplierTime > 0)
         {
-            while (multiplierTime > 0)
-            {
-                yield return new WaitForSeconds(multiplierDecrease);
-                multiplierTime -= multiplierDecrease;
-                Debug.Log("Time until multiplier expires: " + multiplierTime);
-            }
-            yield return new WaitForEndOfFrame();
-            multiplier = baseMultiplier;
+            yield return new WaitForSeconds(multiplierDecrease);
+            multiplierTime -= multiplierDecrease;
+            Debug.Log("Time until multiplier expires: " + multiplierTime);
         }
+        yield return new WaitForEndOfFrame();
+        multiplier = baseMultiplier;
+        multiplierTime = 0;
+        comboList.Clear();
     }
 }

@@ -29,7 +29,7 @@ public class AIHandler : MonoBehaviour, IDamageable
 
     void Start()
     {
-        scoreSystem = GameObject.FindGameObjectWithTag("GameController")?.GetComponent<ScoreSystem>();
+        scoreSystem = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<ScoreSystem>();
         currentAiState = idleState;
         currentAiState.EnterState(this);
     }
@@ -39,10 +39,10 @@ public class AIHandler : MonoBehaviour, IDamageable
         currentAiState.UpdateState(this);
     }
 
-    public void DealDamage(int amount)
+    public void DealDamage(int amount, string gunName = "")
     {
         health -= amount;
-        scoreSystem?.TriggerAwardPointsEvent(amount, $"gun");
+        scoreSystem?.TriggerAwardPointsEvent(amount, gunName);
         if (health <= 0)
         {
             ChangeState(deadState);
