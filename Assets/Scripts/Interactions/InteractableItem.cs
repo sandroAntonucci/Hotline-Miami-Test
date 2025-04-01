@@ -49,22 +49,28 @@ public class InteractableItem : MonoBehaviour
 
     public virtual void ChangeInteractionText()
     {
-
         foreach (var gO in GameObject.FindGameObjectsWithTag("InteractionText"))
         {
             gO.GetComponent<TMPro.TextMeshProUGUI>().text = interactionText;
         }
+    }
 
+    public virtual void ResetInteractionText()
+    {
+        foreach (var gO in GameObject.FindGameObjectsWithTag("InteractionText"))
+        {
+            gO.GetComponent<TMPro.TextMeshProUGUI>().text = "";
+        }
     }
 
     public virtual void Interaction()
     {
-
+        ResetInteractionText();
     }
 
     public virtual void StopInteraction()
     {
-
+        if (canInteract) ChangeInteractionText();
     }
 
 }
