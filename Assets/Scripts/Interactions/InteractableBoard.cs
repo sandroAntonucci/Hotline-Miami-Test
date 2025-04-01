@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class InteractableBoard : InteractableItem
 {
+    [SerializeField] private GameObject levelSelector;
 
     [SerializeField] private GameObject interactionCamera;
 
@@ -36,7 +37,9 @@ public class InteractableBoard : InteractableItem
 
         cameraZoom.ZoomIn();
 
-        //interactionCamera.SetActive(true);
+        StartCoroutine(ActivateLevelSelector());
+
+        interactionCamera.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
@@ -45,22 +48,24 @@ public class InteractableBoard : InteractableItem
     {
         if (cameraZoom.isZooming) return;
 
+        levelSelector.SetActive(false);
+
         cameraZoom.ZoomOut();
 
+        StartCoroutine(ResetInteraction());
+    }
 
-        // Wait for the camera to finish zooming out
+    private IEnumerator ResetInteraction()
+    {
         while (cameraZoom.isZooming)
         {
-            Debug.Log("Waiting for camera to zoom out");
-            return;
+            yield return null;
         }
-
-        isInteracting = false;
 
         base.StopInteraction();
 
+        isInteracting = false;
 
-       
         player.SetActive(true);
         interactionCamera.SetActive(false);
 
@@ -68,4 +73,13 @@ public class InteractableBoard : InteractableItem
         Cursor.visible = false;
     }
 
+    private IEnumerator ActivateLevelSelector()
+    {
+        while (cameraZoom.isZooming)
+        {
+            yield return null;
+        }
+
+        levelSelector.SetActive(true);
+    }
 }
