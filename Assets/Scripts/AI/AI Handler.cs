@@ -22,14 +22,12 @@ public class AIHandler : MonoBehaviour, IDamageable
     public AIStunnedState stunnedState = new AIStunnedState();
     public AIDeadState deadState = new AIDeadState();
 
-    public ScoreSystem scoreSystem;
     public NodeRegion currentNodeRegion;
     public Node currentNode;
 
 
     void Start()
     {
-        scoreSystem = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<ScoreSystem>();
         currentAiState = idleState;
         currentAiState.EnterState(this);
     }
@@ -42,7 +40,7 @@ public class AIHandler : MonoBehaviour, IDamageable
     public void DealDamage(int amount, string gunName = "")
     {
         health -= amount;
-        scoreSystem?.TriggerAwardPointsEvent(amount, gunName);
+        ScoreSystem.Instance.TriggerAwardPointsEvent(amount, gunName);
         if (health <= 0)
         {
             ChangeState(deadState);
