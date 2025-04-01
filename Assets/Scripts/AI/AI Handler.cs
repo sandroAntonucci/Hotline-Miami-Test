@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class AIHandler : MonoBehaviour, IDamageable
@@ -21,12 +22,14 @@ public class AIHandler : MonoBehaviour, IDamageable
     public AIStunnedState stunnedState = new AIStunnedState();
     public AIDeadState deadState = new AIDeadState();
 
+    public ScoreSystem scoreSystem;
     public NodeRegion currentNodeRegion;
     public Node currentNode;
 
 
     void Start()
     {
+        scoreSystem = GameObject.FindGameObjectWithTag("GameController")?.GetComponent<ScoreSystem>();
         currentAiState = idleState;
         currentAiState.EnterState(this);
     }
@@ -39,6 +42,7 @@ public class AIHandler : MonoBehaviour, IDamageable
     public void DealDamage(int amount)
     {
         health -= amount;
+        scoreSystem?.TriggerAwardPointsEvent(amount, $"gun");
         if (health <= 0)
         {
             ChangeState(deadState);

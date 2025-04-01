@@ -513,6 +513,7 @@ MonoBehaviour:
   enemyType: 1
   rangedEnemyDistance: 5
   meleeEnemyDistance: 2
+  scoreSystem: {fileID: 0}
   currentNodeRegion: {fileID: 967124116}
   currentNode: {fileID: 0}
 --- !u!136 &273739792
@@ -2869,6 +2870,7 @@ MonoBehaviour:
   enemyType: 1
   rangedEnemyDistance: 5
   meleeEnemyDistance: 2
+  scoreSystem: {fileID: 0}
   currentNodeRegion: {fileID: 594849266}
   currentNode: {fileID: 0}
 --- !u!136 &1969488463
@@ -3174,6 +3176,7 @@ MonoBehaviour:
   enemyType: 1
   rangedEnemyDistance: 5
   meleeEnemyDistance: 2
+  scoreSystem: {fileID: 0}
   currentNodeRegion: {fileID: 967124116}
   currentNode: {fileID: 0}
 --- !u!136 &2015939980

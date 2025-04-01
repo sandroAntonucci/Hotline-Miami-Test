@@ -44,9 +44,14 @@ public class ScoreSystem : MonoBehaviour
         StopCoroutine(multiplierCoroutine);
     }
 
+    public void TriggerAwardPointsEvent(int amount, string weapon = "")
+    {
+        awardPointsEvent?.Invoke(amount, weapon);
+    }
+
     private void AwardPointsEventCallback(int amount, string weapon = "")
     {
-        // TODO: Hay que calcular el multiplicador segun el combo.
+        multiplier = comboList.Count * 2;
         multiplierTime = baseMultiplierTime;
         score += (uint)(amount * multiplier);
         Debug.Log($"Awarded {amount} (x{multiplier}) of score, new score {score}");

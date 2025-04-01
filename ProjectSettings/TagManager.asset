@@ -11,6 +11,7 @@ TagManager:
   - CameraHolder
   - NodeRegion
   - Board
+  - GameManager
   layers:
   - Default
   - TransparentFX

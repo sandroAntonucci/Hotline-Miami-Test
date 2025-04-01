@@ -992,6 +992,7 @@ Material:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         m_Offset: {x: -0.12944686, y: 0}
 =======
         m_Offset: {x: -0.45199847, y: 0}
@@ -1002,6 +1003,9 @@ Material:
 =======
         m_Offset: {x: -0.014222026, y: 0}
 >>>>>>> cb60f73dc74bab459ce81dab58321da6430e988f
+=======
+        m_Offset: {x: 0.28811264, y: 0}
+>>>>>>> d7a201a61fa0897e6349501bb84788994652fd47
     - _MainTex:
         m_Texture: {fileID: 3979749513159669524}
         m_Scale: {x: 1, y: 1}
