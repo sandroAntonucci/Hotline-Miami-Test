@@ -6925,7 +6925,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentLevel: 1
   currentLevelButton: {fileID: 2022516786}
-  buttonColorChangeTime: 0.1
+  buttonColorChangeTime: 0.2
 --- !u!114 &1616479904
 MonoBehaviour:
   m_ObjectHideFlags: 0

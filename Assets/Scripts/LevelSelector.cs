@@ -38,30 +38,30 @@ public class LevelSelector : MonoBehaviour
 
     private IEnumerator ButtonEffects()
     {
-        float alpha = 0.15f;
-        float targetAlpha = 0.3f;
+        float alpha = 0f;
+        float targetAlpha = 0.15f;
 
         while (true)
         {
             // Fade in
-            while (alpha < 0.15f)
+            while (alpha < targetAlpha)
             {
                 alpha = Mathf.MoveTowards(alpha, targetAlpha, buttonColorChangeTime * Time.deltaTime);
                 currentLevelImage.color = new Color(currentLevelImage.color.r, currentLevelImage.color.g, currentLevelImage.color.b, alpha);
                 yield return null;
             }
 
-            targetAlpha = 0; // Switch to fade out
+            targetAlpha = 0f; // Switch to fade out
 
             // Fade out
-            while (alpha > 0.05f)
+            while (alpha > targetAlpha)
             {
                 alpha = Mathf.MoveTowards(alpha, targetAlpha, buttonColorChangeTime * Time.deltaTime);
                 currentLevelImage.color = new Color(currentLevelImage.color.r, currentLevelImage.color.g, currentLevelImage.color.b, alpha);
                 yield return null;
             }
 
-            targetAlpha = 0.3f; // Switch to fade in again
+            targetAlpha = 0.15f; // Switch to fade in again
         }
     }
 

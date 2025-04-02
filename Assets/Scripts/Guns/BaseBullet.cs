@@ -9,6 +9,8 @@ public class BaseBullet : MonoBehaviour
     public float lifeDuration = 2f;
     public int bulletDamage;
 
+    public bool canDamage = true;
+
     public BulletPool bulletPool;
 
     public ParticleSystem hitEffectOne;
@@ -22,6 +24,8 @@ public class BaseBullet : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
+        canDamage = true;
+
 
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.useGravity = false;
@@ -32,6 +36,7 @@ public class BaseBullet : MonoBehaviour
 
         Ray ray = new Ray(cameraHolder.position + cameraHolder.forward * 0.1f, cameraHolder.forward);
         RaycastHit hit;
+
 
         if (Physics.Raycast(ray, out hit) && !GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAim>().isAiming)
         {
@@ -44,23 +49,37 @@ public class BaseBullet : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        // Check for collision using Raycast
+        Ray ray = new Ray(transform.position, rb.velocity.normalized);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, speed * Time.deltaTime))
+        {
+            if (hit.collider.CompareTag("Enemy"))
+            {
+                if (!canDamage) return;
+                AIHandler aiHandlerComponent = hit.collider.GetComponent<AIHandler>();
+                if (aiHandlerComponent != null)
+                {
+                    aiHandlerComponent.DealDamage(bulletDamage);
+                }
+            }
+        }
+    }
+
+
     private void OnCollisionEnter(Collision collision)
     {
         
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            AIHandler aiHandlerComponent = collision.gameObject.GetComponent<AIHandler>();
-            if (aiHandlerComponent != null)
-            {
-                aiHandlerComponent.DealDamage(bulletDamage);
-            }
-        }
-
         if (!collision.gameObject.CompareTag("Player"))
         {
             if (DestroyCoroutine != null) return;
 
             BulletHoleDecalPool.Instance.SpawnBulletHole(collision.contacts[0].point, collision.contacts[0].normal);
+
+            canDamage = false;
 
             DestroyCoroutine = StartCoroutine(DestroyAfterDelay());
         }

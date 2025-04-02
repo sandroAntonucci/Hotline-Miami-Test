@@ -12,6 +12,7 @@ TagManager:
   - NodeRegion
   - Board
   - GameManager
+  - SphereTest
   layers:
   - Default
   - TransparentFX

@@ -11,7 +11,7 @@ public class AIHandler : MonoBehaviour, IDamageable
     public float fieldOfView = 30.0f;
     public float distanceOfView = 5;
     public EnemyType enemyType;
-    public float rangedEnemyDistance = 5;
+    public float rangedEnemyDistance = 8;
     public float meleeEnemyDistance = 2;
 
     public AIBaseState currentAiState; 
