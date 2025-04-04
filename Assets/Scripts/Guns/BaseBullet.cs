@@ -51,22 +51,22 @@ public class BaseBullet : MonoBehaviour
 
     private void Update()
     {
-        // Check for collision using Raycast
-        Ray ray = new Ray(transform.position, rb.velocity.normalized);
+        float moveDistance = speed * Time.deltaTime;
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, speed * Time.deltaTime))
+        if (Physics.Raycast(transform.position, rb.velocity.normalized, out hit, moveDistance * 1000))
         {
             if (hit.collider.CompareTag("Enemy"))
             {
-                if (!canDamage) return;
                 AIHandler aiHandlerComponent = hit.collider.GetComponent<AIHandler>();
                 if (aiHandlerComponent != null)
                 {
                     aiHandlerComponent.DealDamage(bulletDamage);
+                    ReturnToPool();
                 }
             }
         }
+
     }
 
 
