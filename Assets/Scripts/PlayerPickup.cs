@@ -20,6 +20,8 @@ public class PlayerPickup : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
 
+            if (hit.collider.GetComponent<PickUpController>() == null) return;
+
             if (hit.collider.CompareTag("Gun") && Vector3.Distance(transform.position, hit.collider.transform.position) < hit.collider.GetComponent<PickUpController>().pickUpRange && !hit.collider.GetComponent<PickUpController>().equipped)
             {
 

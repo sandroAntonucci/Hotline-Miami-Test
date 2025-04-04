@@ -1,4 +1,5 @@
 using System.Collections;
+using JetBrains.Annotations;
 using TMPro.Examples;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ public class BaseBullet : MonoBehaviour
     public int bulletDamage;
 
     public bool canDamage = true;
+
+    public bool isEnemyBullet = false;
 
     public BulletPool bulletPool;
 
@@ -38,15 +41,25 @@ public class BaseBullet : MonoBehaviour
         RaycastHit hit;
 
 
-        if (Physics.Raycast(ray, out hit) && !GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAim>().isAiming)
+        if (isEnemyBullet)
         {
-            Vector3 direction = (hit.point - transform.position).normalized;
-            rb.velocity = direction * speed;
+            Vector3 playerDirection = (GameObject.FindGameObjectWithTag("Player").transform.position - transform.position).normalized;
+            rb.velocity = playerDirection * speed * 0.5f;
         }
+
         else
         {
-            rb.velocity = transform.right * -1 * speed;
+            if (Physics.Raycast(ray, out hit) && !GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAim>().isAiming)
+            {
+                Vector3 direction = (hit.point - transform.position).normalized;
+                rb.velocity = direction * speed;
+            }
+            else
+            {
+                rb.velocity = transform.right * -1 * speed;
+            }
         }
+
     }
 
     private void Update()
@@ -54,7 +67,7 @@ public class BaseBullet : MonoBehaviour
         float moveDistance = speed * Time.deltaTime;
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position, rb.velocity.normalized, out hit, moveDistance * 1000))
+        if (Physics.Raycast(transform.position, rb.velocity.normalized, out hit, moveDistance * 1000) && !isEnemyBullet)
         {
             if (hit.collider.CompareTag("Enemy"))
             {

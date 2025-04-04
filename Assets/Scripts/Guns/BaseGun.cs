@@ -9,6 +9,8 @@ public abstract class BaseGun : BaseWeapon
 
     public Vector3 aimPosition;
 
+    public bool isEnemyGun = false;
+
     public float fireRate;
     public int maxAmmo;
     public int currentAmmo;
@@ -64,7 +66,7 @@ public abstract class BaseGun : BaseWeapon
             Shoot();
         }
 
-        if (startingRotation != null)
+        if (startingRotation != null && !isEnemyGun)
         {
             transform.localRotation = Quaternion.Slerp(transform.localRotation, startingRotation, Time.deltaTime * recoilRecoverySpeed);
         }  
@@ -86,11 +88,15 @@ public abstract class BaseGun : BaseWeapon
         // Get a bullet from the pool
         GameObject bullet = BulletPool.Instance.GetBullet(shootPosition.position, shootPosition.rotation);
         BaseBullet bulletComp = bullet.GetComponent<BaseBullet>();
+
+        if (isEnemyGun) bulletComp.isEnemyBullet = true;
+        else bulletComp.isEnemyBullet = false;
+
         bulletComp.bulletDamage = weaponBulletDamage;
 
         bullet.SetActive(true);
 
-        ApplyRecoil();
+        if(!isEnemyGun) ApplyRecoil();
     }
 
     private IEnumerator ShowMuzzleFlash()
