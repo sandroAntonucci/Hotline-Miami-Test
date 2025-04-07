@@ -9,8 +9,6 @@ public abstract class BaseGun : BaseWeapon
 
     public Vector3 aimPosition;
 
-    public bool isEnemyGun = false;
-
     public float fireRate;
     public int maxAmmo;
     public int currentAmmo;
@@ -39,19 +37,33 @@ public abstract class BaseGun : BaseWeapon
 
     private void Awake()
     {
-        shootAction = PlayerControls.FindAction("Shoot");
-        shootAction.performed += ctx => StartShooting();
-        shootAction.canceled += ctx => StopShooting();
+
+        pickUpController = GetComponent<PickUpController>();
+
+        if (!isEnemyWeapon)
+        {
+            SetUpPlayerWeapon();
+        }
+        else
+        {
+            SetUpEnemyGun();
+        }
     }
 
     private void OnEnable()
     {
-        shootAction.Enable();
+        if (shootAction != null) 
+        {
+            shootAction.Enable();
+        }
     }
 
     private void OnDisable()
     {
-        shootAction.Disable();
+        if (shootAction != null)
+        {
+            shootAction.Disable();
+        }
     }
 
     private void Start()
@@ -66,7 +78,7 @@ public abstract class BaseGun : BaseWeapon
             Shoot();
         }
 
-        if (startingRotation != null && !isEnemyGun)
+        if (startingRotation != null && !isEnemyWeapon)
         {
             transform.localRotation = Quaternion.Slerp(transform.localRotation, startingRotation, Time.deltaTime * recoilRecoverySpeed);
         }  
@@ -81,7 +93,7 @@ public abstract class BaseGun : BaseWeapon
 
         ShootCooldownCoroutine = StartCoroutine(ShootCooldown());
 
-        currentAmmo--;
+        if(!isEnemyWeapon) currentAmmo--;
 
         StartCoroutine(ShowMuzzleFlash());
 
@@ -89,14 +101,14 @@ public abstract class BaseGun : BaseWeapon
         GameObject bullet = BulletPool.Instance.GetBullet(shootPosition.position, shootPosition.rotation);
         BaseBullet bulletComp = bullet.GetComponent<BaseBullet>();
 
-        if (isEnemyGun) bulletComp.isEnemyBullet = true;
+        if (isEnemyWeapon) bulletComp.isEnemyBullet = true;
         else bulletComp.isEnemyBullet = false;
 
         bulletComp.bulletDamage = weaponBulletDamage;
 
         bullet.SetActive(true);
 
-        if(!isEnemyGun) ApplyRecoil();
+        if(!isEnemyWeapon) ApplyRecoil();
     }
 
     private IEnumerator ShowMuzzleFlash()
@@ -152,4 +164,19 @@ public abstract class BaseGun : BaseWeapon
         transform.rotation = transform.rotation * Quaternion.Euler(0f, rand, -recoilStrength);
     }
 
+    private void SetUpEnemyGun() 
+    {
+        pickUpController.enabled = false;
+        GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<BoxCollider>().isTrigger = false;
+    }
+    
+
+    public override void SetUpPlayerWeapon()
+    {
+        isEnemyWeapon = false;
+        shootAction = PlayerControls.FindAction("Shoot");
+        shootAction.performed += ctx => StartShooting();
+        shootAction.canceled += ctx => StopShooting();
+    }
 }

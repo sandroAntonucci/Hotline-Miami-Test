@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
-
+using System.Runtime.InteropServices.WindowsRuntime;
 
 public class PickUpController : MonoBehaviour
 {
@@ -139,7 +139,6 @@ public class PickUpController : MonoBehaviour
         slotFull = false;
 
         transform.SetParent(null);
-
         
         // Make Rigidbody not kinematic and BoxCollider normal
         rb.isKinematic = false;
@@ -149,9 +148,6 @@ public class PickUpController : MonoBehaviour
 
         // Carry player's momentum
         rb.velocity = player.GetComponent<CharacterController>().velocity;
-
-        // Add force to the throw
-        
 
         if (GetComponent<BaseWeapon>().isMelee)
         {
@@ -172,7 +168,6 @@ public class PickUpController : MonoBehaviour
 
         // Disable script
         weaponScript.enabled = false;
-
 
         if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAim>().isAiming)
         {

@@ -8,6 +8,7 @@ using UnityEngine;
 public class AIHandler : MonoBehaviour, IDamageable
 {
     public int health = 100;
+    public BaseWeapon weapon;
     public float fieldOfView = 30.0f;
     public float distanceOfView = 5;
     public EnemyType enemyType;
@@ -28,6 +29,8 @@ public class AIHandler : MonoBehaviour, IDamageable
 
     void Start()
     {
+        weapon = GetComponentInChildren<BaseWeapon>();
+
         currentAiState = idleState;
         currentAiState.EnterState(this);
     }
