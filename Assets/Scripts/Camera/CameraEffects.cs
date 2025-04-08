@@ -11,6 +11,8 @@ public class CameraEffects : MonoBehaviour
 
     public ProceduralRecoil recoil;
 
+    public Coroutine ChangeFOVCoroutine;
+
     private void Awake()
     {
         if (Instance == null)

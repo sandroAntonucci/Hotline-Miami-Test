@@ -180,7 +180,7 @@ public class PlayerMovement : MonoBehaviour
 
             // Start a coroutine to smoothly transition to the slide height
             StartCoroutine(LerpCameraHeight(originalHeight, slideHeight, 0.2f, true));
-            StartCoroutine(CameraEffects.Instance.ChangeFOV(90f, 0.2f));
+            CameraEffects.Instance.ChangeFOVCoroutine = StartCoroutine(CameraEffects.Instance.ChangeFOV(90f, 0.2f));
         }
     }
 
@@ -197,11 +197,11 @@ public class PlayerMovement : MonoBehaviour
             
             if (gameObject.GetComponent<PlayerAim>().isAiming)
             {
-                StartCoroutine(CameraEffects.Instance.ChangeFOV(40f, 0.2f));
+                CameraEffects.Instance.ChangeFOVCoroutine = StartCoroutine(CameraEffects.Instance.ChangeFOV(40f, 0.2f));
             }
             else
             {
-                StartCoroutine(CameraEffects.Instance.ChangeFOV(70f, 0.2f));
+                CameraEffects.Instance.ChangeFOVCoroutine = StartCoroutine(CameraEffects.Instance.ChangeFOV(70f, 0.2f));
             }
         }
     }

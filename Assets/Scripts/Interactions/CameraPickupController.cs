@@ -7,7 +7,7 @@ using UnityEngine;
 public class InteractableController : MonoBehaviour
 {
 
-    private InteractableItem currentItem;
+    public InteractableItem currentItem;
 
     private void Update()
     {
@@ -20,23 +20,27 @@ public class InteractableController : MonoBehaviour
         {
 
             InteractableItem item = hit.collider.GetComponent<InteractableItem>();
-
-            if (item != null && Vector3.Distance(transform.position, hit.collider.transform.position) < item.interactionRange && currentItem != item)
+            
+            // If Raycast hits an interactable object and it isn't current interactable object
+            if (item != null && Vector3.Distance(transform.position, hit.collider.transform.position) < item.interactionRange && currentItem != item && !item.isInteracting)
             {
-                
+                if (currentItem != null) ResetItem();
+
                 item.canInteract = true;
                 currentItem = item;
                 currentItem.ChangeInteractionText();
             }
-            else if (item == null || currentItem != item || Vector3.Distance(transform.position, hit.collider.transform.position) > item.interactionRange)
+
+            // If Raycast hits an interactable object but its out of interaction range
+            else if ((item != null && Vector3.Distance(transform.position, hit.collider.transform.position) >= item.interactionRange || item == null) && currentItem != null)  
             {
-                if (currentItem != null)
-                {
-                    ResetItem();
-                }
+                ResetItem();
             }
+
+
         }
 
+        // If Raycast doesn't hit anything
         else
         {
             if (currentItem != null)

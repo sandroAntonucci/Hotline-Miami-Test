@@ -1,20 +1,13 @@
 using StarterAssets;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using TMPro;
-using System.Runtime.InteropServices.WindowsRuntime;
 
-public class PickUpController : MonoBehaviour
+public class PickUpController : InteractableItem
 {
     [Header("PICK UP VARIABLES")]
-    public float pickUpRange;
     [SerializeField] private float dropForwardForce;
     [SerializeField] private float dropUpwardForce;
-
-    [SerializeField] private InputActionAsset PlayerControls;
-
     [SerializeField] private float throwForce = 600f;
 
     private BaseWeapon weaponScript;
@@ -22,47 +15,12 @@ public class PickUpController : MonoBehaviour
     private BoxCollider coll;
     private Transform player, gunContainer, fpsCam;
 
-    private InputAction pickAction;
-    private InputAction dropAction;
-
     public bool equipped;
     public static bool slotFull;
     public static PickUpController weaponEquipped;
-    public bool playerCanPick;
-
-    private Ray cameraRay;
-
-    private void Awake()
-    {
-        pickAction = PlayerControls.FindAction("PickUp");
-        dropAction = PlayerControls.FindAction("Drop");
-
-        pickAction.performed += _ =>
-        {
-            if(playerCanPick) PickUp();
-        };
-        dropAction.performed += _ =>
-        {
-            if(equipped) Drop();
-        };
-    }
-
-    private void OnEnable()
-    {
-        pickAction.Enable();
-        dropAction.Enable();
-    }
-
-    private void OnDisable()
-    {
-        pickAction.Disable();
-        dropAction.Disable();
-    }
 
     private void Start()
     {
-
-        // Assign components
         weaponScript = GetComponent<BaseWeapon>();
         fpsCam = GameObject.Find("Main Camera").transform;
         rb = GetComponent<Rigidbody>();
@@ -70,24 +28,32 @@ public class PickUpController : MonoBehaviour
         player = GameObject.Find("Player").transform;
         gunContainer = GameObject.Find("ItemHolder").transform;
 
-        if (!equipped)
+        weaponScript.enabled = false;
+        rb.isKinematic = false;
+        coll.isTrigger = false;
+
+    }
+
+    public override void Interaction()
+    {
+        if (!equipped && !isInteracting)
         {
-            weaponScript.enabled = false;
-            rb.isKinematic = false;
-            coll.isTrigger = false;
+            PickUp();
+            base.Interaction();
         }
+    }
+
+    public override void StopInteraction()
+    {
         if (equipped)
         {
-            weaponScript.enabled = true;
-            rb.isKinematic = true;
-            coll.isTrigger = true;
-            slotFull = true;
+            Drop();
+            base.StopInteraction();
         }
     }
 
     private void PickUp()
     {
-
         if (weaponEquipped != null)
         {
             weaponEquipped.Drop();
@@ -96,23 +62,19 @@ public class PickUpController : MonoBehaviour
         equipped = true;
         slotFull = true;
 
-        // Disable physics
         rb.isKinematic = true;
         rb.interpolation = RigidbodyInterpolation.None;
         coll.isTrigger = true;
 
-        // Start moving the gun smoothly
         StartCoroutine(MoveToGunContainer());
 
-        // Enable script
         weaponScript.enabled = true;
-
         weaponEquipped = this;
     }
 
     private IEnumerator MoveToGunContainer()
     {
-        float duration = 0.2f; // Adjust this for faster/slower movement
+        float duration = 0.2f;
         float elapsedTime = 0f;
         Vector3 startPosition = transform.position;
         Quaternion startRotation = transform.rotation;
@@ -122,16 +84,16 @@ public class PickUpController : MonoBehaviour
             transform.position = Vector3.Lerp(startPosition, gunContainer.position, elapsedTime / duration);
             transform.rotation = Quaternion.Lerp(startRotation, gunContainer.rotation, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
-            yield return null; // Wait for next frame
+            yield return null;
         }
 
-        // Ensure final position and rotation match perfectly
         transform.SetParent(gunContainer);
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
         transform.localScale = Vector3.one;
-    }
 
+        isInteracting = true;
+    }
 
     private void Drop()
     {
@@ -139,42 +101,37 @@ public class PickUpController : MonoBehaviour
         slotFull = false;
 
         transform.SetParent(null);
-        
-        // Make Rigidbody not kinematic and BoxCollider normal
+
         rb.isKinematic = false;
         rb.interpolation = RigidbodyInterpolation.Extrapolate;
         rb.useGravity = true;
         coll.isTrigger = false;
 
-        // Carry player's momentum
         rb.velocity = player.GetComponent<CharacterController>().velocity;
 
-        if (GetComponent<BaseWeapon>().isMelee)
+        if (weaponScript.isMelee)
         {
-            rb.AddForce(rb.transform.right * -1 * dropForwardForce, ForceMode.Impulse);
-            rb.AddForce(rb.transform.up * dropUpwardForce / 2, ForceMode.Impulse);
-            rb.AddTorque(rb.transform.forward, ForceMode.Impulse);
+            rb.AddForce(-transform.right * dropForwardForce, ForceMode.Impulse);
+            rb.AddForce(transform.up * dropUpwardForce / 2, ForceMode.Impulse);
+            rb.AddTorque(transform.forward, ForceMode.Impulse);
         }
         else
         {
-            rb.AddForce(rb.transform.right * -1 * dropForwardForce, ForceMode.Impulse);
-            rb.AddForce(rb.transform.up * dropUpwardForce, ForceMode.Impulse);
-            // Add random rotation
-            float random = Random.Range(-1f, 1f);
-            rb.AddTorque(new Vector3(random, random, random));
+            rb.AddForce(-transform.right * dropForwardForce, ForceMode.Impulse);
+            rb.AddForce(transform.up * dropUpwardForce, ForceMode.Impulse);
+            rb.AddTorque(Random.onUnitSphere);
         }
 
-
-
-        // Disable script
         weaponScript.enabled = false;
 
-        if (GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAim>().isAiming)
+        var aim = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAim>();
+        if (aim.isAiming)
         {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAim>().ResetAim();
+            Debug.Log("Resetting aim");
+            aim.ResetAim();
         }
 
         weaponEquipped = null;
+        isInteracting = false;
     }
-
 }

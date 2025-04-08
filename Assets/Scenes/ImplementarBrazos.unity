@@ -436,17 +436,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3365527126188094874, guid: a35b8c32acba1334b9b31dfe8cdbc9be, type: 3}
+      propertyPath: pickUpRange
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3365527126188094874, guid: a35b8c32acba1334b9b31dfe8cdbc9be, type: 3}
+      propertyPath: playerInput
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: 4a1a05656139ec942b117e261a77dfc6, type: 3}
+    - target: {fileID: 3365527126188094874, guid: a35b8c32acba1334b9b31dfe8cdbc9be, type: 3}
+      propertyPath: interactionText
+      value: '[E] TO PICK UP'
+      objectReference: {fileID: 0}
+    - target: {fileID: 3365527126188094874, guid: a35b8c32acba1334b9b31dfe8cdbc9be, type: 3}
+      propertyPath: interactionRange
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4965438261709640327, guid: a35b8c32acba1334b9b31dfe8cdbc9be, type: 3}
       propertyPath: m_Name
       value: Pistol
       objectReference: {fileID: 0}
     - target: {fileID: 5738456080911321149, guid: a35b8c32acba1334b9b31dfe8cdbc9be, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.4479313
+      value: 0.056
       objectReference: {fileID: 0}
     - target: {fileID: 5738456080911321149, guid: a35b8c32acba1334b9b31dfe8cdbc9be, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.017999172
+      value: 0.188
       objectReference: {fileID: 0}
     - target: {fileID: 5738456080911321149, guid: a35b8c32acba1334b9b31dfe8cdbc9be, type: 3}
       propertyPath: m_LocalPosition.z
@@ -507,7 +523,6 @@ GameObject:
   - component: {fileID: 530991634}
   - component: {fileID: 530991635}
   - component: {fileID: 530991636}
-  - component: {fileID: 530991637}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -636,18 +651,6 @@ MonoBehaviour:
   itemHolder: {fileID: 2101095367}
   marker: {fileID: 420088472}
   isAiming: 0
---- !u!114 &530991637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 530991630}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1404ff098bdfab647a996470e1cb8b0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &614803649
 GameObject:
   m_ObjectHideFlags: 0
@@ -1301,6 +1304,18 @@ PrefabInstance:
       propertyPath: m_ExcludeLayers.m_Bits
       value: 960
       objectReference: {fileID: 0}
+    - target: {fileID: 4899663142652711550, guid: ed118b4e90f0b04469cf566dc07667f9, type: 3}
+      propertyPath: playerInput
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: 4a1a05656139ec942b117e261a77dfc6, type: 3}
+    - target: {fileID: 4899663142652711550, guid: ed118b4e90f0b04469cf566dc07667f9, type: 3}
+      propertyPath: interactionText
+      value: '[E] TO PICK UP'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4899663142652711550, guid: ed118b4e90f0b04469cf566dc07667f9, type: 3}
+      propertyPath: interactionRange
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5185308276053572420, guid: ed118b4e90f0b04469cf566dc07667f9, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -1343,6 +1358,7 @@ GameObject:
   - component: {fileID: 963194229}
   - component: {fileID: 963194231}
   - component: {fileID: 963194230}
+  - component: {fileID: 963194232}
   m_Layer: 6
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1484,6 +1500,19 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &963194232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1671ebff834d7534bbd4bd909bc79dcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentItem: {fileID: 0}
 --- !u!1 &1040253214
 GameObject:
   m_ObjectHideFlags: 0
@@ -2219,7 +2248,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1339736206212195114, guid: ed118b4e90f0b04469cf566dc07667f9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.959
+      value: 0.234
       objectReference: {fileID: 0}
     - target: {fileID: 1339736206212195114, guid: ed118b4e90f0b04469cf566dc07667f9, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2273,6 +2302,22 @@ PrefabInstance:
       propertyPath: recoilStrengthMultiplier
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 4899663142652711550, guid: ed118b4e90f0b04469cf566dc07667f9, type: 3}
+      propertyPath: pickUpRange
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4899663142652711550, guid: ed118b4e90f0b04469cf566dc07667f9, type: 3}
+      propertyPath: playerInput
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: 4a1a05656139ec942b117e261a77dfc6, type: 3}
+    - target: {fileID: 4899663142652711550, guid: ed118b4e90f0b04469cf566dc07667f9, type: 3}
+      propertyPath: interactionText
+      value: '[E] TO PICK UP'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4899663142652711550, guid: ed118b4e90f0b04469cf566dc07667f9, type: 3}
+      propertyPath: interactionRange
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7927092878114675782, guid: ed118b4e90f0b04469cf566dc07667f9, type: 3}
       propertyPath: m_Name
       value: Carabine
@@ -2287,6 +2332,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 705507995}
+  - {fileID: 464054974}
   - {fileID: 4167756498287955820}
   - {fileID: 1476785105}
   - {fileID: 530991633}
@@ -2295,7 +2341,6 @@ SceneRoots:
   - {fileID: 1932100971}
   - {fileID: 454678474}
   - {fileID: 398921594}
-  - {fileID: 464054974}
   - {fileID: 50539163}
   - {fileID: 863961728}
   - {fileID: 709866103}

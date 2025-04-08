@@ -9,9 +9,6 @@ public class AIChasingState : AIBaseState
 
     public override void EnterState(AIHandler handler)
     {
-
-        Debug.Log("Chasing State Entered");
-
         agent = handler.GetComponent<NavMeshAgent>();
         if (handler.enemyType == EnemyType.Melee)
             agent.stoppingDistance = handler.meleeEnemyDistance;
