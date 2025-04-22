@@ -48,6 +48,7 @@ public abstract class BaseGun : BaseWeapon
         {
             SetUpEnemyGun();
         }
+
     }
 
     private void OnEnable()
@@ -60,7 +61,7 @@ public abstract class BaseGun : BaseWeapon
 
     private void OnDisable()
     {
-        if (shootAction != null)
+        if (shootAction != null && !PickUpController.slotFull)
         {
             shootAction.Disable();
         }
@@ -174,9 +175,10 @@ public abstract class BaseGun : BaseWeapon
 
     public override void SetUpPlayerWeapon()
     {
-        isEnemyWeapon = false;
         shootAction = PlayerControls.FindAction("Shoot");
         shootAction.performed += ctx => StartShooting();
         shootAction.canceled += ctx => StopShooting();
+
+        isEnemyWeapon = false;
     }
 }

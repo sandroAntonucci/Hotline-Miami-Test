@@ -44,7 +44,7 @@ public class AIHandler : MonoBehaviour, IDamageable
     {
         health -= amount;
         ScoreSystem.Instance.TriggerAwardPointsEvent(amount, gunName);
-        if (health <= 0)
+        if (health <= 0 && currentAiState != deadState)
         {
             ChangeState(deadState);
         }

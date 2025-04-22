@@ -27,11 +27,9 @@ public class AIDeadState : AIBaseState
             rb.AddTorque(Random.insideUnitSphere * 15, ForceMode.Force);
         }
 
-        handler.weapon.SetUpPlayerWeapon();
         handler.weapon.DropWeapon();
-
-
-
+        handler.weapon.SetUpPlayerWeapon();
+        
     }
 
     public override void UpdateState(AIHandler handler)
